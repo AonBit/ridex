@@ -1,3 +1,22 @@
+## v0.1.1 (2026-04-28)
+
+### Breaking Changes
+- 无
+
+### Features
+- 无
+
+### Fixes
+- 无
+
+### Improvements
+- 调整容器构建阶段执行顺序，在构建前先完成 Prisma 数据库推送，降低构建阶段因数据库上下文缺失导致的失败概率。
+
+### Others
+- 无
+
+Tests: not run (not requested)
+
 ## v0.1.0 (2026-04-28)
 
 ### Breaking Changes
