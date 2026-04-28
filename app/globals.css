@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-brand: var(--carolina-blue);
+  --color-brand-secondary: var(--slate-blue);
+  --color-accent: var(--deep-cerise);
+  --color-bg: var(--alice-blue-2);
+  --color-surface: var(--white);
+  --color-text-primary: var(--space-cadet);
+}
+
+.admin-shell {
+  font-family: "Open Sans", sans-serif;
+}
+
+.admin-shell .admin-card {
+  border: 1px solid var(--alice-blue-4);
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+}
+
+.admin-shell .admin-button {
+  border-radius: 10px;
+  background: var(--carolina-blue);
+  color: var(--white);
+  transition: var(--transition);
+}
+
+.admin-shell .admin-button:hover {
+  background: var(--blue-jeans);
+}

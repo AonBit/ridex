@@ -1,56 +1,55 @@
-<div align="center">
-  
-  ![GitHub repo size](https://img.shields.io/github/repo-size/codewithsadee/ridex)
-  ![GitHub stars](https://img.shields.io/github/stars/codewithsadee/ridex?style=social)
-  ![GitHub forks](https://img.shields.io/github/forks/codewithsadee/ridex?style=social)
-[![Twitter Follow](https://img.shields.io/twitter/follow/codewithsadee_?style=social)](https://twitter.com/intent/follow?screen_name=codewithsadee_)
-  [![YouTube Video Views](https://img.shields.io/youtube/views/DJAK-KODM5E?style=social)](https://youtu.be/DJAK-KODM5E)
+# Ridex Template Platform
 
-  <br />
-  <br />
-  
-  <img src="./readme-images/project-logo.png" />
+A private-deployable car rental website template with an admin panel.
 
-  <h2 align="center">Ridex - Car rent website</h2>
+## Stack
+- Next.js 14 + TypeScript
+- Prisma + SQLite
+- NextAuth (credentials)
+- Local disk media storage (`public/uploads`)
+- Docker Compose deployment
 
-  Ridex is fully responsive car rental website, <br />Responsive for all devices, built using HTML, CSS, and JavaScript.
+## Scope
+- Editable brand, theme, homepage copy, fleet listing, blog, FAQ, navigation, and media.
+- No online booking/payment/order workflow.
 
-  <a href="https://codewithsadee.github.io/ridex/"><strong>➥ Live Demo</strong></a>
+## Quick Start
+1. Copy env:
+   ```bash
+   cp .env.example .env
+   ```
+2. Install and bootstrap:
+   ```bash
+   ./scripts/bootstrap.sh
+   ```
+3. Start dev server:
+   ```bash
+   npm run dev
+   ```
+4. Open:
+   - Public site: `http://localhost:3000`
+   - Admin: `http://localhost:3000/admin`
 
-</div>
+Seed admin credentials are in `.env`:
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
 
-<br />
-
-### Demo Screeshots
-
-![Ridex Desktop Demo](./readme-images/desktop.png "Desktop Demo")
-
-### Prerequisites
-
-Before you begin, ensure you have met the following requirements:
-
-* [Git](https://git-scm.com/downloads "Download Git") must be installed on your operating system.
-
-### Run Locally
-
-To run **Ridex** locally, run this command on your git bash:
-
-Linux and macOS:
-
+## Deployment
 ```bash
-sudo git clone https://github.com/codewithsadee/ridex.git
+docker compose up --build -d
 ```
 
-Windows:
+Persisted data:
+- `prisma/data.db`
+- `public/uploads/*`
 
-```bash
-git clone https://github.com/codewithsadee/ridex.git
-```
+## APIs
+- `POST /api/upload` (multipart file)
+- `GET /api/theme`
+- `GET /api/export`
+- `POST /api/import`
 
-### Contact
-
-If you want to contact with me you can reach me at [Twitter](https://www.twitter.com/codewithsadee).
-
-### License
-
-This project is **free to use** and does not contains any license.
+## Docs
+- Editable fields matrix: `docs/editable-fields.md`
+- Migration blueprint: `docs/migration-map.md`
+- Delivery playbook: `docs/deployment-playbook.md`

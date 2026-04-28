@@ -1,0 +1,167 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  role          UserRole  @default(OWNER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model SiteConfig {
+  id               Int      @id @default(1)
+  companyName      String
+  companyTagline   String
+  contactPhone     String
+  contactEmail     String
+  whatsapp         String?
+  address          String
+  businessHours    String
+  logoPath         String?
+  faviconPath      String?
+  footerCopyright  String
+  legalNotice      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model ThemeConfig {
+  id              Int      @id @default(1)
+  primaryColor    String
+  secondaryColor  String
+  accentColor     String
+  backgroundColor String
+  surfaceColor    String
+  textColor       String
+  successColor    String
+  warningColor    String
+  errorColor      String
+  borderRadius    String
+  shadowStyle     String
+  fontHeading     String
+  fontBody        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model PageContent {
+  id                    Int      @id @default(1)
+  heroTitle             String
+  heroSubtitle          String
+  heroCtaText           String
+  heroCtaLink           String
+  sectionFeaturedTitle  String
+  sectionWhyUsTitle     String
+  sectionBlogTitle      String
+  sectionFaqTitle       String
+  showWhyUs             Boolean  @default(true)
+  showTestimonials      Boolean  @default(true)
+  showFaq               Boolean  @default(true)
+  showBlog              Boolean  @default(true)
+  seoTitle              String
+  seoDescription        String
+  ogImagePath           String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model WhyUsItem {
+  id        String   @id @default(cuid())
+  title     String
+  body      String
+  icon      String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FleetCar {
+  id             String    @id @default(cuid())
+  name           String
+  brand          String
+  year           Int
+  seats          Int
+  fuelType       String
+  transmission   String
+  priceLabel     String
+  mileageLabel   String
+  coverImagePath String
+  isFeatured     Boolean   @default(true)
+  isPublished    Boolean   @default(true)
+  sortOrder      Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  media          CarMedia[]
+}
+
+model CarMedia {
+  id        String   @id @default(cuid())
+  carId     String
+  path      String
+  altText   String?
+  sortOrder Int      @default(0)
+  car       FleetCar @relation(fields: [carId], references: [id], onDelete: Cascade)
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  body        String
+  coverPath   String?
+  isPublished Boolean  @default(true)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NavItem {
+  id        String   @id @default(cuid())
+  label     String
+  href      String
+  type      NavType  @default(INTERNAL)
+  isVisible Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaAsset {
+  id         String   @id @default(cuid())
+  path       String   @unique
+  fileName   String
+  mimeType   String
+  size       Int
+  usedBy     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model FaqItem {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserRole {
+  OWNER
+  EDITOR
+}
+
+enum NavType {
+  INTERNAL
+  EXTERNAL
+}
