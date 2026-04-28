@@ -1,0 +1,13 @@
+services:
+  app:
+    image: ghcr.io/aonbit/ridex:${IMAGE_TAG:-latest}
+    container_name: ridex
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/public/uploads
+    command: sh -c "npx prisma db push && npm run start"
