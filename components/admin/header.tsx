@@ -13,7 +13,7 @@ export async function AdminHeader({
   return (
     <header className="mb-6 flex items-center justify-between rounded-2xl bg-white p-4 shadow-sm">
       <div>
-        <p className="text-sm text-slate-500">Signed in as</p>
+        <p className="text-sm text-slate-500">{messages.admin.signedInAs}</p>
         <p className="font-semibold">{session?.user?.email}</p>
       </div>
       <form

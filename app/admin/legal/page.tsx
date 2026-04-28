@@ -3,51 +3,51 @@ import { marked } from "marked";
 import { prisma } from "@/lib/prisma";
 import { upsertLegalPage } from "@/lib/actions";
 import { SectionCard, SubmitButton, TextArea, TextField } from "@/components/forms/base";
+import { getMessages, type AppLocale } from "@/lib/i18n";
 
 const localeOptions = [
-  { db: Locale.ja, app: "ja", label: "日本語" },
-  { db: Locale.en, app: "en", label: "English" },
-  { db: Locale.zh_Hant, app: "zh-Hant", label: "繁體中文" }
+  { db: Locale.ja, app: "ja" },
+  { db: Locale.en, app: "en" },
+  { db: Locale.zh_Hant, app: "zh-Hant" }
 ] as const;
 
 const legalSlugs = [
-  { slug: "tokushoho", title: "特定商取引法に基づく表記", contentType: LegalContentType.TEXT },
-  { slug: "privacy", title: "個人情報とプライバシー規約", contentType: LegalContentType.TEXT },
-  { slug: "anti-social-policy", title: "反社会的勢力に対する基本方針", contentType: LegalContentType.TEXT },
-  { slug: "rental-terms", title: "レンタカー貸渡約款", contentType: LegalContentType.MARKDOWN }
+  { slug: "tokushoho", key: "tokushoho", contentType: LegalContentType.TEXT },
+  { slug: "privacy", key: "privacy", contentType: LegalContentType.TEXT },
+  { slug: "anti-social-policy", key: "antiSocialPolicy", contentType: LegalContentType.TEXT },
+  { slug: "rental-terms", key: "rentalTerms", contentType: LegalContentType.MARKDOWN }
 ] as const;
 
-export default async function LegalPage() {
+export default async function LegalPage({ params }: { params?: { locale?: AppLocale } }) {
+  const locale = params?.locale ?? "ja";
   const legalPages = await prisma.legalPage.findMany();
+  const messages = getMessages(locale);
+  const t = messages.admin.legalPage;
 
   return (
-    <SectionCard title="Legal Content" description="Manage legal pages by language. Rental terms supports markdown.">
+    <SectionCard title={t.title} description={t.desc}>
       <div className="space-y-8">
-        {localeOptions.map((locale) => (
-          <div key={locale.db} className="rounded-xl border border-slate-200 p-4">
-            <h3 className="mb-3 text-lg font-semibold">{locale.label}</h3>
+        {localeOptions.map((localeOption) => (
+          <div key={localeOption.db} className="rounded-xl border border-slate-200 p-4">
+            <h3 className="mb-3 text-lg font-semibold">{localeOption.app}</h3>
             <div className="space-y-4">
               {legalSlugs.map((entry) => {
-                const current = legalPages.find((item) => item.locale === locale.db && item.slug === entry.slug);
+                const current = legalPages.find((item) => item.locale === localeOption.db && item.slug === entry.slug);
+                const legalTitle = messages.legal[entry.key];
                 return (
-                  <form key={`${locale.db}-${entry.slug}`} action={upsertLegalPage} className="space-y-2 rounded-lg border border-slate-100 p-3">
-                    <input type="hidden" name="locale" value={locale.app} />
+                  <form key={`${localeOption.db}-${entry.slug}`} action={upsertLegalPage} className="space-y-2 rounded-lg border border-slate-100 p-3">
+                    <input type="hidden" name="locale" value={localeOption.app} />
                     <input type="hidden" name="slug" value={entry.slug} />
                     <input type="hidden" name="contentType" value={entry.contentType} />
-                    <TextField name="title" label={`${entry.title} 标题`} defaultValue={current?.title ?? entry.title} />
-                    <TextArea
-                      name="content"
-                      label={entry.contentType === LegalContentType.MARKDOWN ? "Markdown 内容" : "内容"}
-                      defaultValue={current?.content ?? ""}
-                      rows={entry.contentType === LegalContentType.MARKDOWN ? 12 : 6}
-                    />
+                    <TextField name="title" label={`${legalTitle} ${t.titleSuffix}`} defaultValue={current?.title ?? legalTitle} />
+                    <TextArea name="content" label={entry.contentType === LegalContentType.MARKDOWN ? t.markdownContent : t.content} defaultValue={current?.content ?? ""} rows={entry.contentType === LegalContentType.MARKDOWN ? 12 : 6} />
                     {entry.contentType === LegalContentType.MARKDOWN && current?.content ? (
                       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                        <p className="mb-2 text-xs text-slate-500">预览</p>
+                        <p className="mb-2 text-xs text-slate-500">{t.preview}</p>
                         <div dangerouslySetInnerHTML={{ __html: marked.parse(current.content) }} />
                       </div>
                     ) : null}
-                    <SubmitButton label="保存" />
+                    <SubmitButton label={t.save} />
                   </form>
                 );
               })}

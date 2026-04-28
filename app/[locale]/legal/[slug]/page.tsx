@@ -26,7 +26,7 @@ export default async function LegalSlugPage({ params }: { params: { locale: stri
   return (
     <main className="container py-24">
       <h1 className="mb-4 text-3xl font-bold">{page.title}</h1>
-      <p className="mb-6 text-sm text-slate-500">{messages.admin.title}</p>
+      <p className="mb-6 text-sm text-slate-500">{messages.legal.sectionLabel}</p>
       <article className="prose max-w-none rounded-xl bg-white p-6 shadow" dangerouslySetInnerHTML={{ __html: html }} />
     </main>
   );

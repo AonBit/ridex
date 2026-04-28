@@ -20,17 +20,16 @@ async function main() {
     create: {
       id: 1,
       companyName: "Ridex",
-      companyTagline: "Rent your favourite car",
+      companyTagline: "日本向けレンタカーソリューション",
       contactPhone: "8 800 234 56 78",
       contactEmail: "contact@ridex.local",
       whatsapp: "8 800 234 56 78",
-      address: "Live in New York, New Jerset and Connecticut!",
-      businessHours: "Mon - Sat: 9:00 am - 6:00 pm",
+      address: "東京都内・神奈川・大阪エリア対応",
+      businessHours: "月 - 土: 9:00 - 18:00",
       logoPath: "/assets/images/logo.svg",
       faviconPath: "/favicon.svg",
       footerCopyright: "© 2022 codewithsadee. All Rights Reserved",
-      legalNotice:
-        "Search for cheap rental cars in New York. With a diverse fleet of 19,000 vehicles, Waydex offers its consumers an attractive and fun selection."
+      legalNotice: "日本全国向けにお得なレンタカー情報を提供。多様な車種から最適な一台を選べます。"
     }
   });
 
@@ -60,20 +59,20 @@ async function main() {
     update: {},
     create: {
       id: 1,
-      heroTitle: "The easy way to takeover a lease",
-      heroSubtitle: "Live in New York, New Jerset and Connecticut!",
-      heroCtaText: "Explore cars",
+      heroTitle: "日本で手軽にレンタカー予約",
+      heroSubtitle: "東京・神奈川・大阪エリアに対応",
+      heroCtaText: "車両を見る",
       heroCtaLink: "#featured-car",
-      sectionFeaturedTitle: "Featured cars",
-      sectionWhyUsTitle: "Get started with 4 simple steps",
-      sectionBlogTitle: "Our Blog",
-      sectionFaqTitle: "Frequently asked questions",
+      sectionFeaturedTitle: "おすすめ車両",
+      sectionWhyUsTitle: "4つのステップで利用開始",
+      sectionBlogTitle: "お知らせ",
+      sectionFaqTitle: "よくある質問",
       showWhyUs: true,
       showTestimonials: false,
       showFaq: false,
       showBlog: true,
-      seoTitle: "Ridex - Rent your favourite car",
-      seoDescription: "Ridex is fully responsive car rental website."
+      seoTitle: "Ridex - 日本向けレンタカー",
+      seoDescription: "Ridex は日本市場向けの多言語レンタカーサイトテンプレートです。"
     }
   });
 
@@ -81,8 +80,8 @@ async function main() {
     await prisma.navItem.createMany({
       data: [
         { label: "Home", href: "#home", sortOrder: 1 },
-        { label: "Explore cars", href: "#featured-car", sortOrder: 2 },
-        { label: "About us", href: "#", sortOrder: 3 },
+        { label: "Cars", href: "#featured-car", sortOrder: 2 },
+        { label: "About", href: "#", sortOrder: 3 },
         { label: "Blog", href: "#blog", sortOrder: 4 }
       ]
     });
@@ -176,7 +175,7 @@ async function main() {
     });
 
     const footerRegionTitle =
-      locale === Locale.ja ? "Neighborhoods in Japan" : locale === Locale.en ? "Neighborhoods in Japan" : "日本熱門據點";
+      locale === Locale.ja ? "日本の主要エリア" : locale === Locale.en ? "Neighborhoods in Japan" : "日本熱門據點";
     const footerRegionItems =
       locale === Locale.ja
         ? "Tokyo\nShinjuku\nShibuya\nGinza\nUeno\nYokohama\nOsaka\nKyoto"

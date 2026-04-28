@@ -6,39 +6,6 @@ import { getMessages } from "@/lib/i18n";
 
 type PublicData = AwaitedReturn<typeof getPublicData>;
 
-const getStartSteps = [
-  {
-    iconClass: "icon-1",
-    icon: "person-add-outline",
-    title: "Create a profile",
-    text: "If you are going to use a passage of Lorem Ipsum, you need to be sure.",
-    hasLink: true
-  },
-  {
-    iconClass: "icon-2",
-    icon: "car-outline",
-    title: "Tell us what car you want",
-    text: "Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
-    hasLink: false
-  },
-  {
-    iconClass: "icon-3",
-    icon: "person-outline",
-    title: "Match with seller",
-    text: "It to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
-    hasLink: false
-  },
-  {
-    iconClass: "icon-4",
-    icon: "card-outline",
-    title: "Make a deal",
-    text: "There are many variations of passages of Lorem available, but the majority have suffered alteration",
-    hasLink: false
-  }
-];
-
-const footerCompany = ["About us", "Pricing plans", "Our blog", "Contacts"];
-const footerSupport = ["Help center", "Ask a question", "Privacy policy", "Terms & conditions"];
 const footerNeighborhoods = [
   "Tokyo",
   "Shinjuku",
@@ -53,8 +20,14 @@ const footerNeighborhoods = [
 export function PublicHome({ data, locale }: { data: PublicData; locale: string }) {
   const { site, page, navItems, cars, blogPosts, localizedTexts } = data;
   const messages = getMessages(data.locale);
+  const getStartSteps = [
+    { iconClass: "icon-1", icon: "person-add-outline", ...messages.site.steps[0], hasLink: true },
+    { iconClass: "icon-2", icon: "car-outline", ...messages.site.steps[1], hasLink: false },
+    { iconClass: "icon-3", icon: "person-outline", ...messages.site.steps[2], hasLink: false },
+    { iconClass: "icon-4", icon: "card-outline", ...messages.site.steps[3], hasLink: false }
+  ];
   const localizedMap = new Map(localizedTexts.map((entry) => [entry.key, entry.value]));
-  const footerRegionTitle = localizedMap.get("footer.region.title") || "Neighborhoods in Japan";
+  const footerRegionTitle = localizedMap.get("footer.region.title") || messages.site.footerRegionFallbackTitle;
   const footerRegionItems = (localizedMap.get("footer.region.items") || footerNeighborhoods.join("\n"))
     .split("\n")
     .map((item) => item.trim())
@@ -69,7 +42,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
           <div className="overlay" data-overlay></div>
 
           <Link href="#" className="logo">
-            <img src={site?.logoPath || "/assets/images/logo.svg"} alt="Ridex logo" />
+            <img src={site?.logoPath || "/assets/images/logo.svg"} alt={messages.site.logoAlt} />
           </Link>
 
           <nav className="navbar" data-navbar>
@@ -94,14 +67,14 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
 
             <Link href="#featured-car" className="btn" aria-labelledby="aria-label-txt">
               <ion-icon name="car-outline"></ion-icon>
-              <span id="aria-label-txt">Explore cars</span>
+              <span id="aria-label-txt">{messages.site.exploreCars}</span>
             </Link>
 
-            <a href="#" className="btn user-btn" aria-label="Profile">
+            <a href="#" className="btn user-btn" aria-label={messages.site.profile}>
               <ion-icon name="person-outline"></ion-icon>
             </a>
 
-            <button className="nav-toggle-btn" data-nav-toggle-btn aria-label="Toggle Menu">
+            <button className="nav-toggle-btn" data-nav-toggle-btn aria-label={messages.site.toggleMenuAriaLabel}>
               <span className="one"></span>
               <span className="two"></span>
               <span className="three"></span>
@@ -124,27 +97,27 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
               <form action="" className="hero-form">
                 <div className="input-wrapper">
                   <label htmlFor="input-1" className="input-label">
-                    Car, model, or brand
+                    {messages.site.carModelLabel}
                   </label>
-                  <input type="text" name="car-model" id="input-1" className="input-field" placeholder="What car are you looking?" />
+                  <input type="text" name="car-model" id="input-1" className="input-field" placeholder={messages.site.carModelPlaceholder} />
                 </div>
 
                 <div className="input-wrapper">
                   <label htmlFor="input-2" className="input-label">
-                    Max. monthly payment
+                    {messages.site.monthlyPaymentLabel}
                   </label>
-                  <input type="text" name="monthly-pay" id="input-2" className="input-field" placeholder="Add an amount in $" />
+                  <input type="text" name="monthly-pay" id="input-2" className="input-field" placeholder={messages.site.monthlyPaymentPlaceholder} />
                 </div>
 
                 <div className="input-wrapper">
                   <label htmlFor="input-3" className="input-label">
-                    Make Year
+                    {messages.site.makeYearLabel}
                   </label>
-                  <input type="text" name="year" id="input-3" className="input-field" placeholder="Add a minimal make year" />
+                  <input type="text" name="year" id="input-3" className="input-field" placeholder={messages.site.makeYearPlaceholder} />
                 </div>
 
                 <button type="submit" className="btn">
-                  Search
+                  {messages.site.search}
                 </button>
               </form>
             </div>
@@ -156,7 +129,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
                 <h2 className="h2 section-title">{page?.sectionFeaturedTitle}</h2>
 
                 <a href="#" className="featured-car-link">
-                  <span>View more</span>
+                  <span>{messages.site.viewMore}</span>
                   <ion-icon name="arrow-forward-outline"></ion-icon>
                 </a>
               </div>
@@ -183,7 +156,9 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
                         <ul className="card-list">
                           <li className="card-list-item">
                             <ion-icon name="people-outline"></ion-icon>
-                            <span className="card-item-text">{car.seats} People</span>
+                            <span className="card-item-text">
+                              {car.seats} {messages.site.peopleSuffix}
+                            </span>
                           </li>
                           <li className="card-list-item">
                             <ion-icon name="flash-outline"></ion-icon>
@@ -201,15 +176,15 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
 
                         <div className="card-price-wrapper">
                           <p className="card-price">
-                            <strong>{car.priceLabel.replace(/\/.*/, "")}</strong> / month
+                            <strong>{car.priceLabel.replace(/\/.*/, "")}</strong> {messages.site.perMonth}
                           </p>
 
-                          <button className="btn fav-btn" aria-label="Add to favourite list" type="button">
+                          <button className="btn fav-btn" aria-label={messages.site.addToFavourite} type="button">
                             <ion-icon name="heart-outline"></ion-icon>
                           </button>
 
                           <button className="btn" type="button">
-                            Rent now
+                            {messages.site.rentNow}
                           </button>
                         </div>
                       </div>
@@ -222,7 +197,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
 
           <section className="section get-start">
             <div className="container">
-              <h2 className="h2 section-title">Get started with 4 simple steps</h2>
+              <h2 className="h2 section-title">{messages.site.getStartedTitle}</h2>
 
               <ul className="get-start-list">
                 {getStartSteps.map((step) => (
@@ -238,7 +213,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
 
                       {step.hasLink ? (
                         <a href="#" className="card-link">
-                          Get started
+                          {messages.site.getStartedCta}
                         </a>
                       ) : null}
                     </div>
@@ -262,7 +237,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
                         </a>
 
                         <a href="#" className="btn card-badge">
-                          {post.excerpt || "Company"}
+                          {post.excerpt || messages.site.blogFallbackCategory}
                         </a>
                       </figure>
 
@@ -275,7 +250,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
                           <div className="publish-date">
                             <ion-icon name="time-outline"></ion-icon>
                             <time dateTime={(post.publishedAt || post.createdAt).toISOString().slice(0, 10)}>
-                              {(post.publishedAt || post.createdAt).toLocaleDateString("en-US", {
+                              {(post.publishedAt || post.createdAt).toLocaleDateString(locale, {
                                 month: "long",
                                 day: "numeric",
                                 year: "numeric"
@@ -303,20 +278,19 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
           <div className="footer-top">
             <div className="footer-brand">
               <a href="#" className="logo">
-                <img src={site?.logoPath || "/assets/images/logo.svg"} alt="Ridex logo" />
+                <img src={site?.logoPath || "/assets/images/logo.svg"} alt={messages.site.logoAlt} />
               </a>
 
               <p className="footer-text">
-                {site?.legalNotice ||
-                  "Search for cheap rental cars in New York. With a diverse fleet of 19,000 vehicles, Waydex offers its consumers an attractive and fun selection."}
+                {site?.legalNotice || messages.site.footerFallbackDescription}
               </p>
             </div>
 
             <ul className="footer-list">
               <li>
-                <p className="footer-list-title">Company</p>
+                <p className="footer-list-title">{messages.site.companyTitle}</p>
               </li>
-              {footerCompany.map((item) => (
+              {messages.site.companyLinks.map((item) => (
                 <li key={item}>
                   <a href="#" className="footer-link">
                     {item}
@@ -337,9 +311,9 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
 
             <ul className="footer-list">
               <li>
-                <p className="footer-list-title">Support</p>
+                <p className="footer-list-title">{messages.site.supportTitle}</p>
               </li>
-              {footerSupport.map((item) => (
+              {messages.site.supportLinks.map((item) => (
                 <li key={item}>
                   <a href="#" className="footer-link">
                     {item}

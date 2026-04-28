@@ -92,8 +92,8 @@ export async function createCar(formData: FormData) {
       year: toInt(formData.get("year"), 2024),
       seats: toInt(formData.get("seats"), 5),
       fuelType: String(formData.get("fuelType") ?? "Hybrid"),
-      transmission: String(formData.get("transmission") ?? "Automatic"),
-      priceLabel: String(formData.get("priceLabel") ?? "$0/month"),
+      transmission: String(formData.get("transmission") ?? "AT"),
+      priceLabel: String(formData.get("priceLabel") ?? "¥0/月"),
       mileageLabel: String(formData.get("mileageLabel") ?? "N/A"),
       coverImagePath: String(formData.get("coverImagePath") ?? "/uploads/placeholder-car.png"),
       isFeatured: toBoolean(formData.get("isFeatured")),
@@ -144,69 +144,69 @@ export async function resetToRidexSnapshot() {
       where: { id: 1 },
       update: {
         companyName: "Ridex",
-        companyTagline: "Rent your favourite car",
+        companyTagline: "日本向けレンタカーソリューション",
         contactPhone: "8 800 234 56 78",
         contactEmail: "contact@ridex.local",
         whatsapp: "8 800 234 56 78",
-        address: "Live in New York, New Jerset and Connecticut!",
-        businessHours: "Mon - Sat: 9:00 am - 6:00 pm",
+        address: "東京都内・神奈川・大阪エリア対応",
+        businessHours: "月 - 土: 9:00 - 18:00",
         logoPath: "/assets/images/logo.svg",
         faviconPath: "/favicon.svg",
         footerCopyright: "© 2022 codewithsadee. All Rights Reserved",
         legalNotice:
-          "Search for cheap rental cars in New York. With a diverse fleet of 19,000 vehicles, Waydex offers its consumers an attractive and fun selection."
+          "日本全国向けにお得なレンタカー情報を提供。多様な車種から最適な一台を選べます。"
       },
       create: {
         id: 1,
         companyName: "Ridex",
-        companyTagline: "Rent your favourite car",
+        companyTagline: "日本向けレンタカーソリューション",
         contactPhone: "8 800 234 56 78",
         contactEmail: "contact@ridex.local",
         whatsapp: "8 800 234 56 78",
-        address: "Live in New York, New Jerset and Connecticut!",
-        businessHours: "Mon - Sat: 9:00 am - 6:00 pm",
+        address: "東京都内・神奈川・大阪エリア対応",
+        businessHours: "月 - 土: 9:00 - 18:00",
         logoPath: "/assets/images/logo.svg",
         faviconPath: "/favicon.svg",
         footerCopyright: "© 2022 codewithsadee. All Rights Reserved",
         legalNotice:
-          "Search for cheap rental cars in New York. With a diverse fleet of 19,000 vehicles, Waydex offers its consumers an attractive and fun selection."
+          "日本全国向けにお得なレンタカー情報を提供。多様な車種から最適な一台を選べます。"
       }
     });
 
     await tx.pageContent.upsert({
       where: { id: 1 },
       update: {
-        heroTitle: "The easy way to takeover a lease",
-        heroSubtitle: "Live in New York, New Jerset and Connecticut!",
+        heroTitle: "日本で手軽にレンタカー予約",
+        heroSubtitle: "東京・神奈川・大阪エリアに対応",
         heroCtaText: "Explore cars",
         heroCtaLink: "#featured-car",
-        sectionFeaturedTitle: "Featured cars",
-        sectionWhyUsTitle: "Get started with 4 simple steps",
-        sectionBlogTitle: "Our Blog",
-        sectionFaqTitle: "Frequently asked questions",
+        sectionFeaturedTitle: "おすすめ車両",
+        sectionWhyUsTitle: "4つのステップで利用開始",
+        sectionBlogTitle: "お知らせ",
+        sectionFaqTitle: "よくある質問",
         showWhyUs: true,
         showTestimonials: false,
         showFaq: false,
         showBlog: true,
-        seoTitle: "Ridex - Rent your favourite car",
-        seoDescription: "Ridex is fully responsive car rental website."
+        seoTitle: "Ridex - 日本向けレンタカー",
+        seoDescription: "Ridex は日本市場向けの多言語レンタカーサイトテンプレートです。"
       },
       create: {
         id: 1,
-        heroTitle: "The easy way to takeover a lease",
-        heroSubtitle: "Live in New York, New Jerset and Connecticut!",
+        heroTitle: "日本で手軽にレンタカー予約",
+        heroSubtitle: "東京・神奈川・大阪エリアに対応",
         heroCtaText: "Explore cars",
         heroCtaLink: "#featured-car",
-        sectionFeaturedTitle: "Featured cars",
-        sectionWhyUsTitle: "Get started with 4 simple steps",
-        sectionBlogTitle: "Our Blog",
-        sectionFaqTitle: "Frequently asked questions",
+        sectionFeaturedTitle: "おすすめ車両",
+        sectionWhyUsTitle: "4つのステップで利用開始",
+        sectionBlogTitle: "お知らせ",
+        sectionFaqTitle: "よくある質問",
         showWhyUs: true,
         showTestimonials: false,
         showFaq: false,
         showBlog: true,
-        seoTitle: "Ridex - Rent your favourite car",
-        seoDescription: "Ridex is fully responsive car rental website."
+        seoTitle: "Ridex - 日本向けレンタカー",
+        seoDescription: "Ridex は日本市場向けの多言語レンタカーサイトテンプレートです。"
       }
     });
   });
