@@ -32,3 +32,22 @@
 .admin-shell .admin-button:hover {
   background: var(--blue-jeans);
 }
+
+/* Backend form controls: make editable fields obvious */
+.admin-shell input:not([type="hidden"]):not([type="checkbox"]):not([type="file"]),
+.admin-shell textarea {
+  border: 0;
+  border-bottom: 2px solid rgb(203 213 225);
+  border-radius: 0;
+  background: transparent;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  outline: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.admin-shell input:not([type="hidden"]):not([type="checkbox"]):not([type="file"]):focus,
+.admin-shell textarea:focus {
+  border-bottom-color: rgb(14 165 233);
+  transform: translateY(-1px);
+}

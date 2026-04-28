@@ -15,7 +15,7 @@ export default function LocalizedLoginPage({
   const hasInvalidCredentials = searchParams?.error === "credentials";
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
+    <div className="admin-shell min-h-screen bg-slate-100 p-6">
       <div className="mx-auto mt-16 max-w-md rounded-2xl bg-white p-6 shadow-lg">
         <h1 className="text-2xl font-bold">{t.admin.signIn}</h1>
         <p className="mt-2 text-sm text-slate-500">{t.admin.loginHint}</p>
@@ -42,11 +42,11 @@ export default function LocalizedLoginPage({
         >
           <div>
             <label className="mb-1 block text-sm">{t.admin.emailLabel}</label>
-            <input name="email" type="email" required className="w-full rounded-lg border border-slate-300 px-3 py-2" />
+            <input name="email" type="email" required className="w-full border-0 border-b-2 border-slate-300 bg-transparent px-1 py-2 outline-none transition duration-200 focus:-translate-y-0.5 focus:border-sky-500" />
           </div>
           <div>
             <label className="mb-1 block text-sm">{t.admin.passwordLabel}</label>
-            <input name="password" type="password" required className="w-full rounded-lg border border-slate-300 px-3 py-2" />
+            <input name="password" type="password" required className="w-full border-0 border-b-2 border-slate-300 bg-transparent px-1 py-2 outline-none transition duration-200 focus:-translate-y-0.5 focus:border-sky-500" />
           </div>
           <button className="w-full rounded-lg bg-slate-900 py-2 text-white">{t.admin.signIn}</button>
         </form>
