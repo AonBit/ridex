@@ -8,7 +8,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
-RUN npm run build
+RUN DATABASE_URL=file:./prisma/build.db npx prisma db push
+RUN DATABASE_URL=file:./prisma/build.db npm run build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
