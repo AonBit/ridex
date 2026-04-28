@@ -1,6 +1,13 @@
 import { auth, signOut } from "@/lib/auth";
+import { getMessages, type AppLocale } from "@/lib/i18n";
 
-export async function AdminHeader() {
+export async function AdminHeader({
+  locale,
+  messages
+}: {
+  locale: AppLocale;
+  messages: ReturnType<typeof getMessages>;
+}) {
   const session = await auth();
 
   return (
@@ -12,10 +19,10 @@ export async function AdminHeader() {
       <form
         action={async () => {
           "use server";
-          await signOut({ redirectTo: "/admin/login" });
+          await signOut({ redirectTo: `/${locale}/login` });
         }}
       >
-        <button className="rounded-lg border border-slate-300 px-4 py-2 text-sm">Sign out</button>
+        <button className="rounded-lg border border-slate-300 px-4 py-2 text-sm">{messages.admin.signOut}</button>
       </form>
     </header>
   );

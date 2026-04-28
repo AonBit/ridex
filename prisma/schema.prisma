@@ -156,6 +156,46 @@ model FaqItem {
   updatedAt DateTime @updatedAt
 }
 
+model LocalizedText {
+  id        String   @id @default(cuid())
+  key       String
+  locale    Locale
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([key, locale])
+}
+
+model LegalPage {
+  id          String           @id @default(cuid())
+  slug        String
+  locale      Locale
+  title       String
+  contentType LegalContentType @default(TEXT)
+  content     String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([slug, locale])
+}
+
+model CompanyInfo {
+  id               String   @id @default(cuid())
+  locale           Locale   @unique
+  companyName      String
+  representative   String
+  registrationNo   String
+  postalCode       String
+  address          String
+  phone            String
+  email            String
+  businessHours    String
+  supportHours     String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
 enum UserRole {
   OWNER
   EDITOR
@@ -164,4 +204,15 @@ enum UserRole {
 enum NavType {
   INTERNAL
   EXTERNAL
+}
+
+enum Locale {
+  ja
+  en
+  zh_Hant
+}
+
+enum LegalContentType {
+  TEXT
+  MARKDOWN
 }

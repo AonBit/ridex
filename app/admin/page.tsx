@@ -6,11 +6,11 @@ export default async function AdminPage() {
   const data = await getAdminData();
 
   const cards = [
-    ["Cars", data.cars.length, "/admin/cars"],
-    ["Blog Posts", data.blogPosts.length, "/admin/blog"],
-    ["FAQ Items", data.faq.length, "/admin/faq"],
-    ["Media Assets", data.media.length, "/admin/media"],
-    ["Navigation", data.navItems.length, "/admin/navigation"]
+    ["Cars", data.cars.length, "cars"],
+    ["Blog Posts", data.blogPosts.length, "blog"],
+    ["FAQ Items", data.faq.length, "faq"],
+    ["Media Assets", data.media.length, "media"],
+    ["Navigation", data.navItems.length, "navigation"]
   ];
 
   return (

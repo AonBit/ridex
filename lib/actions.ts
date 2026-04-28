@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
+import { LegalContentType, Locale } from "@prisma/client";
 
 function toInt(value: FormDataEntryValue | null, fallback = 0) {
   if (!value) return fallback;
@@ -212,4 +213,64 @@ export async function resetToRidexSnapshot() {
 
   revalidatePath("/");
   revalidatePath("/admin");
+}
+
+function toDbLocale(locale: string): Locale {
+  if (locale === "zh-Hant") return Locale.zh_Hant;
+  if (locale === "en") return Locale.en;
+  return Locale.ja;
+}
+
+export async function upsertLegalPage(formData: FormData) {
+  const locale = toDbLocale(String(formData.get("locale") ?? "ja"));
+  const slug = String(formData.get("slug") ?? "privacy");
+  const title = String(formData.get("title") ?? "");
+  const content = String(formData.get("content") ?? "");
+  const contentType = String(formData.get("contentType") ?? "TEXT") as LegalContentType;
+
+  await prisma.legalPage.upsert({
+    where: { slug_locale: { slug, locale } },
+    update: { title, content, contentType },
+    create: { slug, locale, title, content, contentType }
+  });
+
+  revalidatePath("/");
+  revalidatePath("/ja");
+  revalidatePath("/en");
+  revalidatePath("/zh-Hant");
+}
+
+export async function upsertCompanyInfo(formData: FormData) {
+  const locale = toDbLocale(String(formData.get("locale") ?? "ja"));
+  await prisma.companyInfo.upsert({
+    where: { locale },
+    update: {
+      companyName: String(formData.get("companyName") ?? ""),
+      representative: String(formData.get("representative") ?? ""),
+      registrationNo: String(formData.get("registrationNo") ?? ""),
+      postalCode: String(formData.get("postalCode") ?? ""),
+      address: String(formData.get("address") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      businessHours: String(formData.get("businessHours") ?? ""),
+      supportHours: String(formData.get("supportHours") ?? "")
+    },
+    create: {
+      locale,
+      companyName: String(formData.get("companyName") ?? ""),
+      representative: String(formData.get("representative") ?? ""),
+      registrationNo: String(formData.get("registrationNo") ?? ""),
+      postalCode: String(formData.get("postalCode") ?? ""),
+      address: String(formData.get("address") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      businessHours: String(formData.get("businessHours") ?? ""),
+      supportHours: String(formData.get("supportHours") ?? "")
+    }
+  });
+
+  revalidatePath("/");
+  revalidatePath("/ja");
+  revalidatePath("/en");
+  revalidatePath("/zh-Hant");
 }

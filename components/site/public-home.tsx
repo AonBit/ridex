@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { AwaitedReturn } from "@/types/shared";
 import { getPublicData } from "@/lib/data";
 import { SiteBehavior } from "@/components/site/site-behavior";
+import { getMessages } from "@/lib/i18n";
 
 type PublicData = AwaitedReturn<typeof getPublicData>;
 
@@ -49,8 +50,9 @@ const footerNeighborhoods = [
   "Chelsea"
 ];
 
-export function PublicHome({ data }: { data: PublicData }) {
+export function PublicHome({ data, locale }: { data: PublicData; locale: string }) {
   const { site, page, navItems, cars, blogPosts } = data;
+  const messages = getMessages(data.locale);
 
   return (
     <>
@@ -68,7 +70,7 @@ export function PublicHome({ data }: { data: PublicData }) {
             <ul className="navbar-list">
               {navItems.map((item) => (
                 <li key={item.id}>
-                  <Link href={item.href} className="navbar-link" data-nav-link>
+                  <Link href={item.href.startsWith("#") ? `/${locale}${item.href}` : item.href} className="navbar-link" data-nav-link>
                     {item.label}
                   </Link>
                 </li>
@@ -328,6 +330,21 @@ export function PublicHome({ data }: { data: PublicData }) {
                   </a>
                 </li>
               ))}
+              <li>
+                <Link href={`/${locale}/legal/privacy`} className="footer-link">
+                  {messages.legal.privacy}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/legal/anti-social-policy`} className="footer-link">
+                  {messages.legal.antiSocialPolicy}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/legal/rental-terms`} className="footer-link">
+                  {messages.legal.rentalTerms}
+                </Link>
+              </li>
             </ul>
 
             <ul className="footer-list">
@@ -341,6 +358,16 @@ export function PublicHome({ data }: { data: PublicData }) {
                   </a>
                 </li>
               ))}
+              <li>
+                <Link href={`/${locale}/legal/tokushoho`} className="footer-link">
+                  {messages.legal.tokushoho}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/company`} className="footer-link">
+                  {messages.legal.company}
+                </Link>
+              </li>
             </ul>
           </div>
 

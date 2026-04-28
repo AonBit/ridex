@@ -1,6 +1,11 @@
 import { prisma } from "@/lib/prisma";
+import { normalizeLocale } from "@/lib/i18n";
+import { Locale } from "@prisma/client";
 
-export async function getPublicData() {
+export async function getPublicData(localeInput?: string) {
+  const locale = normalizeLocale(localeInput);
+  const dbLocale: Locale = locale === "zh-Hant" ? Locale.zh_Hant : (locale as Locale);
+
   const [site, theme, page, navItems, cars, whyUs, blogPosts, faq] = await Promise.all([
     prisma.siteConfig.findUnique({ where: { id: 1 } }),
     prisma.themeConfig.findUnique({ where: { id: 1 } }),
@@ -12,7 +17,13 @@ export async function getPublicData() {
     prisma.faqItem.findMany({ orderBy: { sortOrder: "asc" } })
   ]);
 
-  return { site, theme, page, navItems, cars, whyUs, blogPosts, faq };
+  const [localizedTexts, legalPages, companyInfo] = await Promise.all([
+    prisma.localizedText.findMany({ where: { locale: dbLocale } }),
+    prisma.legalPage.findMany({ where: { locale: dbLocale } }),
+    prisma.companyInfo.findUnique({ where: { locale: dbLocale } })
+  ]);
+
+  return { site, theme, page, navItems, cars, whyUs, blogPosts, faq, locale, localizedTexts, legalPages, companyInfo };
 }
 
 export async function getAdminData() {

@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "@prisma/client";
+import { LegalContentType, Locale, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -11,12 +11,7 @@ async function main() {
   await prisma.user.upsert({
     where: { email },
     update: { passwordHash, role: "OWNER" },
-    create: {
-      email,
-      name: "Template Owner",
-      passwordHash,
-      role: "OWNER"
-    }
+    create: { email, name: "Template Owner", passwordHash, role: "OWNER" }
   });
 
   await prisma.siteConfig.upsert({
@@ -44,17 +39,17 @@ async function main() {
     update: {},
     create: {
       id: 1,
-      primaryColor: "hsl(204, 91%, 53%)",
-      secondaryColor: "hsl(262, 60%, 57%)",
-      accentColor: "hsl(329, 63%, 52%)",
-      backgroundColor: "hsl(216, 75%, 97%)",
-      surfaceColor: "hsl(0, 0%, 100%)",
-      textColor: "hsl(240, 22%, 25%)",
-      successColor: "hsl(152, 63%, 43%)",
-      warningColor: "hsl(43, 96%, 56%)",
-      errorColor: "hsl(0, 79%, 63%)",
-      borderRadius: "10px",
-      shadowStyle: "3px 3px 9px hsla(240, 14%, 69%, 0.2)",
+      primaryColor: "#3B82F6",
+      secondaryColor: "#8B5CF6",
+      accentColor: "#EC4899",
+      backgroundColor: "#F8FAFC",
+      surfaceColor: "#FFFFFF",
+      textColor: "#1F2937",
+      successColor: "#10B981",
+      warningColor: "#F59E0B",
+      errorColor: "#EF4444",
+      borderRadius: "12px",
+      shadowStyle: "0 8px 24px rgba(15, 23, 42, 0.08)",
       fontHeading: "Nunito",
       fontBody: "Open Sans"
     }
@@ -82,8 +77,7 @@ async function main() {
     }
   });
 
-  const navCount = await prisma.navItem.count();
-  if (!navCount) {
+  if (!(await prisma.navItem.count())) {
     await prisma.navItem.createMany({
       data: [
         { label: "Home", href: "#home", sortOrder: 1 },
@@ -94,148 +88,91 @@ async function main() {
     });
   }
 
-  const carCount = await prisma.fleetCar.count();
-  if (!carCount) {
+  if (!(await prisma.fleetCar.count())) {
     await prisma.fleetCar.createMany({
       data: [
-        {
-          name: "Toyota RAV4",
-          brand: "Toyota",
-          year: 2021,
-          seats: 4,
-          fuelType: "Hybrid",
-          transmission: "Automatic",
-          priceLabel: "$440",
-          mileageLabel: "6.1km / 1-litre",
-          coverImagePath: "/assets/images/car-1.jpg",
-          sortOrder: 1
-        },
-        {
-          name: "BMW 3 Series",
-          brand: "BMW",
-          year: 2019,
-          seats: 4,
-          fuelType: "Gasoline",
-          transmission: "Automatic",
-          priceLabel: "$350",
-          mileageLabel: "8.2km / 1-litre",
-          coverImagePath: "/assets/images/car-2.jpg",
-          sortOrder: 2
-        },
-        {
-          name: "Volkswagen T-Cross",
-          brand: "Volkswagen",
-          year: 2020,
-          seats: 4,
-          fuelType: "Gasoline",
-          transmission: "Automatic",
-          priceLabel: "$400",
-          mileageLabel: "5.3km / 1-litre",
-          coverImagePath: "/assets/images/car-3.jpg",
-          sortOrder: 3
-        },
-        {
-          name: "Cadillac Escalade",
-          brand: "Cadillac",
-          year: 2020,
-          seats: 4,
-          fuelType: "Gasoline",
-          transmission: "Automatic",
-          priceLabel: "$620",
-          mileageLabel: "7.7km / 1-litre",
-          coverImagePath: "/assets/images/car-4.jpg",
-          sortOrder: 4
-        },
-        {
-          name: "BMW 4 Series GTI",
-          brand: "BMW",
-          year: 2021,
-          seats: 4,
-          fuelType: "Gasoline",
-          transmission: "Automatic",
-          priceLabel: "$530",
-          mileageLabel: "7.6km / 1-litre",
-          coverImagePath: "/assets/images/car-5.jpg",
-          sortOrder: 5
-        },
-        {
-          name: "BMW 4 Series",
-          brand: "BMW",
-          year: 2019,
-          seats: 4,
-          fuelType: "Gasoline",
-          transmission: "Automatic",
-          priceLabel: "$490",
-          mileageLabel: "7.2km / 1-litre",
-          coverImagePath: "/assets/images/car-6.jpg",
-          sortOrder: 6
-        }
+        { name: "Toyota RAV4", brand: "Toyota", year: 2021, seats: 4, fuelType: "Hybrid", transmission: "Automatic", priceLabel: "$440", mileageLabel: "6.1km / 1-litre", coverImagePath: "/assets/images/car-1.jpg", sortOrder: 1 },
+        { name: "BMW 3 Series", brand: "BMW", year: 2019, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$350", mileageLabel: "8.2km / 1-litre", coverImagePath: "/assets/images/car-2.jpg", sortOrder: 2 },
+        { name: "Volkswagen T-Cross", brand: "Volkswagen", year: 2020, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$400", mileageLabel: "5.3km / 1-litre", coverImagePath: "/assets/images/car-3.jpg", sortOrder: 3 },
+        { name: "Cadillac Escalade", brand: "Cadillac", year: 2020, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$620", mileageLabel: "7.7km / 1-litre", coverImagePath: "/assets/images/car-4.jpg", sortOrder: 4 },
+        { name: "BMW 4 Series GTI", brand: "BMW", year: 2021, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$530", mileageLabel: "7.6km / 1-litre", coverImagePath: "/assets/images/car-5.jpg", sortOrder: 5 },
+        { name: "BMW 4 Series", brand: "BMW", year: 2019, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$490", mileageLabel: "7.2km / 1-litre", coverImagePath: "/assets/images/car-6.jpg", sortOrder: 6 }
       ]
     });
   }
 
-  const blogCount = await prisma.blogPost.count();
-  if (!blogCount) {
+  if (!(await prisma.blogPost.count())) {
     await prisma.blogPost.createMany({
       data: [
-        {
-          title: "Opening of new offices of the company",
-          slug: "opening-of-new-offices-of-the-company",
-          excerpt: "Company",
-          body: "Opening of new offices of the company",
-          coverPath: "/assets/images/blog-1.jpg",
-          isPublished: true,
-          publishedAt: new Date("2022-01-14T00:00:00.000Z")
-        },
-        {
-          title: "What cars are most vulnerable",
-          slug: "what-cars-are-most-vulnerable",
-          excerpt: "Repair",
-          body: "What cars are most vulnerable",
-          coverPath: "/assets/images/blog-2.jpg",
-          isPublished: true,
-          publishedAt: new Date("2022-01-14T00:00:00.000Z")
-        },
-        {
-          title: "Statistics showed which average age",
-          slug: "statistics-showed-which-average-age",
-          excerpt: "Cars",
-          body: "Statistics showed which average age",
-          coverPath: "/assets/images/blog-3.jpg",
-          isPublished: true,
-          publishedAt: new Date("2022-01-14T00:00:00.000Z")
-        },
-        {
-          title: "What´s required when renting a car?",
-          slug: "whats-required-when-renting-a-car",
-          excerpt: "Cars",
-          body: "What´s required when renting a car?",
-          coverPath: "/assets/images/blog-4.jpg",
-          isPublished: true,
-          publishedAt: new Date("2022-01-14T00:00:00.000Z")
-        },
-        {
-          title: "New rules for handling our cars",
-          slug: "new-rules-for-handling-our-cars",
-          excerpt: "Company",
-          body: "New rules for handling our cars",
-          coverPath: "/assets/images/blog-5.jpg",
-          isPublished: true,
-          publishedAt: new Date("2022-01-14T00:00:00.000Z")
-        }
+        { title: "Opening of new offices of the company", slug: "opening-of-new-offices-of-the-company", excerpt: "Company", body: "Opening of new offices of the company", coverPath: "/assets/images/blog-1.jpg", isPublished: true, publishedAt: new Date("2022-01-14") },
+        { title: "What cars are most vulnerable", slug: "what-cars-are-most-vulnerable", excerpt: "Repair", body: "What cars are most vulnerable", coverPath: "/assets/images/blog-2.jpg", isPublished: true, publishedAt: new Date("2022-01-14") },
+        { title: "Statistics showed which average age", slug: "statistics-showed-which-average-age", excerpt: "Cars", body: "Statistics showed which average age", coverPath: "/assets/images/blog-3.jpg", isPublished: true, publishedAt: new Date("2022-01-14") },
+        { title: "What´s required when renting a car?", slug: "whats-required-when-renting-a-car", excerpt: "Cars", body: "What´s required when renting a car?", coverPath: "/assets/images/blog-4.jpg", isPublished: true, publishedAt: new Date("2022-01-14") },
+        { title: "New rules for handling our cars", slug: "new-rules-for-handling-our-cars", excerpt: "Company", body: "New rules for handling our cars", coverPath: "/assets/images/blog-5.jpg", isPublished: true, publishedAt: new Date("2022-01-14") }
       ]
     });
   }
 
-  const whyUs = await prisma.whyUsItem.count();
-  if (!whyUs) {
-    await prisma.whyUsItem.createMany({
-      data: [
-        { title: "Create a profile", body: "If you are going to use a passage of Lorem Ipsum, you need to be sure.", icon: "person-add-outline", order: 1 },
-        { title: "Tell us what car you want", body: "Various versions have evolved over the years, sometimes by accident, sometimes on purpose", icon: "car-outline", order: 2 },
-        { title: "Match with seller", body: "It to make a type specimen book. It has survived not only five centuries, but also the leap into electronic", icon: "person-outline", order: 3 },
-        { title: "Make a deal", body: "There are many variations of passages of Lorem available, but the majority have suffered alteration", icon: "card-outline", order: 4 }
-      ]
+  const legalSeed = {
+    ja: {
+      tokushoho: "販売業者名、運営責任者、所在地、連絡先、料金、支払時期、引渡時期、キャンセルポリシーをここに記載してください。",
+      privacy: "個人情報の取得目的、第三者提供、保存期間、開示請求方法などをここに記載してください。",
+      "anti-social-policy": "当社は反社会的勢力との一切の関係を遮断し、要求に対しては組織的に対応します。詳細方針をここに記載してください。",
+      "rental-terms": "# レンタカー貸渡約款\n\nこのセクションに約款本文を Markdown で入力してください。"
+    },
+    en: {
+      tokushoho: "Provide seller name, operator, address, contact, pricing, payment timing, delivery timing, and cancellation policy.",
+      privacy: "Describe purpose of data collection, sharing, retention period, and data subject request process.",
+      "anti-social-policy": "We reject all relationships with anti-social forces and respond in an organized manner.",
+      "rental-terms": "# Rental Terms and Conditions\n\nWrite your markdown contract here."
+    },
+    zh_Hant: {
+      tokushoho: "請填寫業者名稱、負責人、地址、聯絡方式、費用、付款時點、交付時點與取消政策。",
+      privacy: "請填寫個人資料蒐集目的、第三方提供、保存期間與查詢更正方式。",
+      "anti-social-policy": "本公司拒絕與反社會勢力往來，並以組織化方式處理相關要求。",
+      "rental-terms": "# 租車借渡約款\n\n請在此以 Markdown 填寫條款內容。"
+    }
+  } as const;
+
+  for (const locale of [Locale.ja, Locale.en, Locale.zh_Hant]) {
+    const key = locale as keyof typeof legalSeed;
+    const pages = legalSeed[key];
+    for (const [slug, content] of Object.entries(pages)) {
+      await prisma.legalPage.upsert({
+        where: { slug_locale: { slug, locale } },
+        update: {},
+        create: {
+          slug,
+          locale,
+          title:
+            slug === "tokushoho"
+              ? "特定商取引法に基づく表記"
+              : slug === "privacy"
+              ? "個人情報とプライバシー規約"
+              : slug === "anti-social-policy"
+              ? "反社会的勢力に対する基本方針"
+              : "レンタカー貸渡約款",
+          content,
+          contentType: slug === "rental-terms" ? LegalContentType.MARKDOWN : LegalContentType.TEXT
+        }
+      });
+    }
+
+    await prisma.companyInfo.upsert({
+      where: { locale },
+      update: {},
+      create: {
+        locale,
+        companyName: locale === Locale.ja ? "会社名（入力してください）" : locale === Locale.en ? "Company Name (Placeholder)" : "公司名稱（請填寫）",
+        representative: locale === Locale.ja ? "代表者名（入力してください）" : locale === Locale.en ? "Representative Name (Placeholder)" : "代表人（請填寫）",
+        registrationNo: locale === Locale.ja ? "法人番号（入力してください）" : locale === Locale.en ? "Registration Number (Placeholder)" : "統編/登記號（請填寫）",
+        postalCode: locale === Locale.ja ? "郵便番号（入力してください）" : locale === Locale.en ? "Postal Code (Placeholder)" : "郵遞區號（請填寫）",
+        address: locale === Locale.ja ? "所在地（入力してください）" : locale === Locale.en ? "Address (Placeholder)" : "地址（請填寫）",
+        phone: locale === Locale.ja ? "電話番号（入力してください）" : locale === Locale.en ? "Phone (Placeholder)" : "電話（請填寫）",
+        email: locale === Locale.ja ? "メール（入力してください）" : locale === Locale.en ? "Email (Placeholder)" : "電子郵件（請填寫）",
+        businessHours: locale === Locale.ja ? "営業時間（入力してください）" : locale === Locale.en ? "Business Hours (Placeholder)" : "營業時間（請填寫）",
+        supportHours: locale === Locale.ja ? "サポート対応時間（入力してください）" : locale === Locale.en ? "Support Hours (Placeholder)" : "客服時間（請填寫）"
+      }
     });
   }
 }
