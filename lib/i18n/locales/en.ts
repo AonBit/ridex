@@ -13,7 +13,7 @@ export default {
     getStartedTitle: "Get started with 4 simple steps",
     getStartedCta: "Get started",
     peopleSuffix: "People",
-    perMonth: "/ month",
+    perDay: "/ day",
     rentNow: "Rent now",
     addToFavourite: "Add to favourite list",
     companyTitle: "Company",
@@ -58,6 +58,7 @@ export default {
     media: "Media",
     legal: "Legal",
     company: "Company Info",
+    siteInfo: "Site Info",
     signIn: "Sign in",
     signOut: "Sign out",
     invalidCredentials: "Invalid email or password.",
@@ -131,7 +132,8 @@ export default {
       published: "Published",
       add: "Add car",
       existing: "Existing Cars",
-      empty: "No cars yet."
+      empty: "No cars yet.",
+      save: "Save"
     },
     blogPage: {
       title: "Blog Management",
@@ -171,7 +173,7 @@ export default {
     },
     legalPage: {
       title: "Legal Content",
-      desc: "Manage legal pages by language. Rental terms supports markdown.",
+      desc: "Manage legal pages. Rental terms supports markdown.",
       titleSuffix: "Title",
       markdownContent: "Markdown Content",
       content: "Content",
@@ -180,7 +182,8 @@ export default {
     },
     companyPage: {
       title: "Company Information",
-      desc: "Localized company placeholders required for legal disclosure.",
+      desc: "Company details for legal disclosure.",
+      siteInfoDesc: "Site information (supports 3 languages).",
       saveCompany: "Save Company Info",
       footerTitle: "Footer Region Title",
       footerItems: "Footer Region Items (one line per item)",

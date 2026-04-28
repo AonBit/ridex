@@ -9,7 +9,6 @@ export default async function AdminPage({ params }: { params?: { locale?: AppLoc
   const t = getMessages(locale).admin.dashboard;
   const cards = [
     [t.cards[0], data.cars.length, "cars"],
-    [t.cards[1], data.blogPosts.length, "blog"],
     [t.cards[2], data.faq.length, "faq"],
     [t.cards[3], data.media.length, "media"],
     [t.cards[4], data.navItems.length, "navigation"]

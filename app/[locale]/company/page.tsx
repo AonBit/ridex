@@ -3,15 +3,9 @@ import { Locale } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getMessages, isSupportedLocale } from "@/lib/i18n";
 
-function toDbLocale(locale: string): Locale {
-  if (locale === "zh-Hant") return Locale.zh_Hant;
-  if (locale === "en") return Locale.en;
-  return Locale.ja;
-}
-
 export default async function CompanyInfoPage({ params }: { params: { locale: string } }) {
   if (!isSupportedLocale(params.locale)) notFound();
-  const companyInfo = await prisma.companyInfo.findUnique({ where: { locale: toDbLocale(params.locale) } });
+  const companyInfo = await prisma.companyInfo.findUnique({ where: { locale: Locale.ja } });
   if (!companyInfo) notFound();
 
   const messages = getMessages(params.locale);

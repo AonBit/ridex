@@ -4,18 +4,11 @@ import { Locale } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getMessages, isSupportedLocale } from "@/lib/i18n";
 
-function toDbLocale(locale: string): Locale {
-  if (locale === "zh-Hant") return Locale.zh_Hant;
-  if (locale === "en") return Locale.en;
-  return Locale.ja;
-}
-
 export default async function LegalSlugPage({ params }: { params: { locale: string; slug: string } }) {
   if (!isSupportedLocale(params.locale)) notFound();
 
-  const dbLocale = toDbLocale(params.locale);
   const page = await prisma.legalPage.findUnique({
-    where: { slug_locale: { slug: params.slug, locale: dbLocale } }
+    where: { slug_locale: { slug: params.slug, locale: Locale.ja } }
   });
 
   if (!page) notFound();

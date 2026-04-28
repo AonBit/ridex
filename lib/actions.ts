@@ -93,7 +93,7 @@ export async function createCar(formData: FormData) {
       seats: toInt(formData.get("seats"), 5),
       fuelType: String(formData.get("fuelType") ?? "Hybrid"),
       transmission: String(formData.get("transmission") ?? "AT"),
-      priceLabel: String(formData.get("priceLabel") ?? "¥0/月"),
+      priceLabel: String(formData.get("priceLabel") ?? "¥0/日"),
       mileageLabel: String(formData.get("mileageLabel") ?? "N/A"),
       coverImagePath: String(formData.get("coverImagePath") ?? "/uploads/placeholder-car.png"),
       isFeatured: toBoolean(formData.get("isFeatured")),
@@ -104,6 +104,35 @@ export async function createCar(formData: FormData) {
 
   revalidatePath("/");
   revalidatePath("/admin");
+}
+
+export async function updateCar(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+
+  await prisma.fleetCar.update({
+    where: { id },
+    data: {
+      name: String(formData.get("name") ?? ""),
+      brand: String(formData.get("brand") ?? ""),
+      year: toInt(formData.get("year"), 2024),
+      seats: toInt(formData.get("seats"), 5),
+      fuelType: String(formData.get("fuelType") ?? "Hybrid"),
+      transmission: String(formData.get("transmission") ?? "AT"),
+      priceLabel: String(formData.get("priceLabel") ?? "¥0/日"),
+      mileageLabel: String(formData.get("mileageLabel") ?? "N/A"),
+      coverImagePath: String(formData.get("coverImagePath") ?? "/uploads/placeholder-car.png"),
+      isFeatured: toBoolean(formData.get("isFeatured")),
+      isPublished: toBoolean(formData.get("isPublished")),
+      sortOrder: toInt(formData.get("sortOrder"), 0)
+    }
+  });
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  revalidatePath("/ja");
+  revalidatePath("/en");
+  revalidatePath("/zh-Hant");
 }
 
 export async function createBlogPost(formData: FormData) {

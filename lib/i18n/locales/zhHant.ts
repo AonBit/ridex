@@ -13,7 +13,7 @@ export default {
     getStartedTitle: "4 個步驟快速開始",
     getStartedCta: "立即開始",
     peopleSuffix: "人",
-    perMonth: "/ 月",
+    perDay: "/ 天",
     rentNow: "立即租車",
     addToFavourite: "加入收藏",
     companyTitle: "公司資訊",
@@ -58,6 +58,7 @@ export default {
     media: "媒體",
     legal: "法務頁面",
     company: "公司資訊",
+    siteInfo: "站點資訊",
     signIn: "登入",
     signOut: "登出",
     invalidCredentials: "帳號或密碼錯誤。",
@@ -131,7 +132,8 @@ export default {
       published: "已發布",
       add: "新增車輛",
       existing: "現有車輛",
-      empty: "尚無車輛。"
+      empty: "尚無車輛。",
+      save: "儲存"
     },
     blogPage: {
       title: "部落格管理",
@@ -171,7 +173,7 @@ export default {
     },
     legalPage: {
       title: "法務內容",
-      desc: "可依語言管理法務頁面，借渡約款支援 Markdown。",
+      desc: "管理法務頁面，借渡約款支援 Markdown。",
       titleSuffix: "標題",
       markdownContent: "Markdown 內容",
       content: "內容",
@@ -180,7 +182,8 @@ export default {
     },
     companyPage: {
       title: "公司資訊",
-      desc: "管理法務揭露所需的多語公司資訊。",
+      desc: "管理法務揭露所需的公司資訊。",
+      siteInfoDesc: "站點資訊（支援三語）",
       saveCompany: "儲存公司資訊",
       footerTitle: "Footer 區域標題",
       footerItems: "Footer 站點列表（每行一項）",

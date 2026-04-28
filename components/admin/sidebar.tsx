@@ -10,12 +10,12 @@ export function AdminSidebar({ locale, messages }: { locale: AppLocale; messages
     [messages.admin.theme, `/${locale}/admin/theme`],
     [messages.admin.homepage, `/${locale}/admin/content`],
     [messages.admin.cars, `/${locale}/admin/cars`],
-    [messages.admin.blog, `/${locale}/admin/blog`],
     [messages.admin.faq, `/${locale}/admin/faq`],
     [messages.admin.navigation, `/${locale}/admin/navigation`],
     [messages.admin.media, `/${locale}/admin/media`],
     [messages.admin.legal, `/${locale}/admin/legal`],
-    [messages.admin.company, `/${locale}/admin/company`]
+    [messages.admin.company, `/${locale}/admin/company`],
+    [messages.admin.siteInfo, `/${locale}/admin/site`]
   ];
 
   return (

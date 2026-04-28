@@ -13,7 +13,7 @@ export default {
     getStartedTitle: "4つのステップで開始",
     getStartedCta: "開始する",
     peopleSuffix: "人",
-    perMonth: "/ 月",
+    perDay: "/ 日",
     rentNow: "今すぐ予約",
     addToFavourite: "お気に入りに追加",
     companyTitle: "会社情報",
@@ -58,6 +58,7 @@ export default {
     media: "メディア",
     legal: "法務ページ",
     company: "会社情報",
+    siteInfo: "サイト情報",
     signIn: "ログイン",
     signOut: "ログアウト",
     invalidCredentials: "メールアドレスまたはパスワードが正しくありません。",
@@ -131,7 +132,8 @@ export default {
       published: "公開",
       add: "車両を追加",
       existing: "既存車両",
-      empty: "車両がありません。"
+      empty: "車両がありません。",
+      save: "保存"
     },
     blogPage: {
       title: "ブログ管理",
@@ -171,7 +173,7 @@ export default {
     },
     legalPage: {
       title: "法務コンテンツ",
-      desc: "言語ごとに法務ページを管理します。貸渡約款は Markdown 対応です。",
+      desc: "法務ページを管理します。貸渡約款は Markdown 対応です。",
       titleSuffix: "タイトル",
       markdownContent: "Markdown 内容",
       content: "内容",
@@ -180,7 +182,8 @@ export default {
     },
     companyPage: {
       title: "会社情報",
-      desc: "法務開示に必要な会社情報を言語別に管理します。",
+      desc: "法務開示に必要な会社情報を管理します。",
+      siteInfoDesc: "站点信息（支持三语言）",
       saveCompany: "会社情報を保存",
       footerTitle: "Footer エリア見出し",
       footerItems: "Footer 拠点一覧（1行1件）",
@@ -204,6 +207,7 @@ export default {
     antiSocialPolicy: "反社会的勢力に対する基本方針",
     rentalTerms: "レンタカー貸渡約款",
     company: "会社情報",
+    siteInfo: "站点信息",
     sectionLabel: "法務情報"
   }
 } as const;

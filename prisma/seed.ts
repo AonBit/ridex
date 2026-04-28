@@ -90,12 +90,12 @@ async function main() {
   if (!(await prisma.fleetCar.count())) {
     await prisma.fleetCar.createMany({
       data: [
-        { name: "Toyota RAV4", brand: "Toyota", year: 2021, seats: 4, fuelType: "Hybrid", transmission: "Automatic", priceLabel: "$440", mileageLabel: "6.1km / 1-litre", coverImagePath: "/assets/images/car-1.jpg", sortOrder: 1 },
-        { name: "BMW 3 Series", brand: "BMW", year: 2019, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$350", mileageLabel: "8.2km / 1-litre", coverImagePath: "/assets/images/car-2.jpg", sortOrder: 2 },
-        { name: "Volkswagen T-Cross", brand: "Volkswagen", year: 2020, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$400", mileageLabel: "5.3km / 1-litre", coverImagePath: "/assets/images/car-3.jpg", sortOrder: 3 },
-        { name: "Cadillac Escalade", brand: "Cadillac", year: 2020, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$620", mileageLabel: "7.7km / 1-litre", coverImagePath: "/assets/images/car-4.jpg", sortOrder: 4 },
-        { name: "BMW 4 Series GTI", brand: "BMW", year: 2021, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$530", mileageLabel: "7.6km / 1-litre", coverImagePath: "/assets/images/car-5.jpg", sortOrder: 5 },
-        { name: "BMW 4 Series", brand: "BMW", year: 2019, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "$490", mileageLabel: "7.2km / 1-litre", coverImagePath: "/assets/images/car-6.jpg", sortOrder: 6 }
+        { name: "Toyota RAV4", brand: "Toyota", year: 2021, seats: 4, fuelType: "Hybrid", transmission: "Automatic", priceLabel: "¥14,800", mileageLabel: "6.1km / 1-litre", coverImagePath: "/assets/images/car-1.jpg", sortOrder: 1 },
+        { name: "BMW 3 Series", brand: "BMW", year: 2019, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "¥12,000", mileageLabel: "8.2km / 1-litre", coverImagePath: "/assets/images/car-2.jpg", sortOrder: 2 },
+        { name: "Volkswagen T-Cross", brand: "Volkswagen", year: 2020, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "¥13,500", mileageLabel: "5.3km / 1-litre", coverImagePath: "/assets/images/car-3.jpg", sortOrder: 3 },
+        { name: "Cadillac Escalade", brand: "Cadillac", year: 2020, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "¥19,800", mileageLabel: "7.7km / 1-litre", coverImagePath: "/assets/images/car-4.jpg", sortOrder: 4 },
+        { name: "BMW 4 Series GTI", brand: "BMW", year: 2021, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "¥17,500", mileageLabel: "7.6km / 1-litre", coverImagePath: "/assets/images/car-5.jpg", sortOrder: 5 },
+        { name: "BMW 4 Series", brand: "BMW", year: 2019, seats: 4, fuelType: "Gasoline", transmission: "Automatic", priceLabel: "¥15,900", mileageLabel: "7.2km / 1-litre", coverImagePath: "/assets/images/car-6.jpg", sortOrder: 6 }
       ]
     });
   }

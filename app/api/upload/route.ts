@@ -10,6 +10,10 @@ export async function POST(request: Request) {
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
+  const allowedMimeTypes = new Set(["image/jpeg", "image/png"]);
+  if (!allowedMimeTypes.has(file.type)) {
+    return NextResponse.json({ error: "Only JPG and PNG images are allowed" }, { status: 400 });
+  }
 
   const saved = await saveUpload(file);
 

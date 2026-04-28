@@ -6,12 +6,17 @@ import { prisma } from "@/lib/prisma";
 export async function generateMetadata(): Promise<Metadata> {
   const page = await prisma.pageContent.findUnique({ where: { id: 1 } });
   const site = await prisma.siteConfig.findUnique({ where: { id: 1 } });
+  const companyName = site?.companyName?.trim() || "Ridex";
+  const firstChar = companyName[0] ?? "R";
+  const icoChar = /^[a-zA-Z]$/.test(firstChar) ? firstChar.toUpperCase() : firstChar;
+  const faviconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#0B132B"/><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" font-weight="700" fill="#ffffff">${icoChar}</text></svg>`;
+  const faviconDataUrl = `data:image/svg+xml,${encodeURIComponent(faviconSvg)}`;
 
   return {
     title: page?.seoTitle ?? "Ridex - Rent your favourite car",
     description: page?.seoDescription ?? "Ridex is fully responsive car rental website.",
     icons: {
-      icon: site?.faviconPath || "/favicon.svg"
+      icon: faviconDataUrl
     }
   };
 }

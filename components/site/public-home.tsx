@@ -18,19 +18,23 @@ const footerNeighborhoods = [
 ];
 
 export function PublicHome({ data, locale }: { data: PublicData; locale: string }) {
-  const { site, page, navItems, cars, blogPosts, localizedTexts } = data;
+  const { site, page, navItems, cars, localizedTexts } = data;
   const messages = getMessages(data.locale);
+  const companyName = site?.companyName?.trim() || "Ridex";
+  const visibleNavItems = navItems.filter((item) => item.href !== "#blog");
   const getStartSteps = [
     { iconClass: "icon-1", icon: "person-add-outline", ...messages.site.steps[0], hasLink: true },
     { iconClass: "icon-2", icon: "car-outline", ...messages.site.steps[1], hasLink: false },
     { iconClass: "icon-3", icon: "person-outline", ...messages.site.steps[2], hasLink: false },
     { iconClass: "icon-4", icon: "card-outline", ...messages.site.steps[3], hasLink: false }
   ];
-  const localizedMap = new Map(localizedTexts.map((entry) => [entry.key, entry.value]));
+  const localizedMap = new Map<string, string>(
+    localizedTexts.map((entry: { key: string; value: string }) => [entry.key, entry.value])
+  );
   const footerRegionTitle = localizedMap.get("footer.region.title") || messages.site.footerRegionFallbackTitle;
-  const footerRegionItems = (localizedMap.get("footer.region.items") || footerNeighborhoods.join("\n"))
+  const footerRegionItems: string[] = (localizedMap.get("footer.region.items") || footerNeighborhoods.join("\n"))
     .split("\n")
-    .map((item) => item.trim())
+    .map((item: string) => item.trim())
     .filter(Boolean);
 
   return (
@@ -42,12 +46,12 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
           <div className="overlay" data-overlay></div>
 
           <Link href="#" className="logo">
-            <img src={site?.logoPath || "/assets/images/logo.svg"} alt={messages.site.logoAlt} />
+            <span className="text-3xl font-extrabold tracking-wide text-[var(--space-cadet)] md:text-4xl">{companyName}</span>
           </Link>
 
           <nav className="navbar" data-navbar>
             <ul className="navbar-list">
-              {navItems.map((item) => (
+              {visibleNavItems.map((item) => (
                 <li key={item.id}>
                   <Link href={item.href.startsWith("#") ? `/${locale}${item.href}` : item.href} className="navbar-link" data-nav-link>
                     {item.label}
@@ -176,7 +180,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
 
                         <div className="card-price-wrapper">
                           <p className="card-price">
-                            <strong>{car.priceLabel.replace(/\/.*/, "")}</strong> {messages.site.perMonth}
+                            <strong>{car.priceLabel.replace(/\/.*/, "")}</strong> {messages.site.perDay}
                           </p>
 
                           <button className="btn fav-btn" aria-label={messages.site.addToFavourite} type="button">
@@ -223,53 +227,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
             </div>
           </section>
 
-          <section className="section blog" id="blog">
-            <div className="container">
-              <h2 className="h2 section-title">{page?.sectionBlogTitle}</h2>
-
-              <ul className="blog-list has-scrollbar">
-                {blogPosts.map((post) => (
-                  <li key={post.id}>
-                    <div className="blog-card">
-                      <figure className="card-banner">
-                        <a href="#">
-                          <img src={post.coverPath || "/assets/images/blog-1.jpg"} alt={post.title} loading="lazy" className="w-100" />
-                        </a>
-
-                        <a href="#" className="btn card-badge">
-                          {post.excerpt || messages.site.blogFallbackCategory}
-                        </a>
-                      </figure>
-
-                      <div className="card-content">
-                        <h3 className="h3 card-title">
-                          <a href="#">{post.title}</a>
-                        </h3>
-
-                        <div className="card-meta">
-                          <div className="publish-date">
-                            <ion-icon name="time-outline"></ion-icon>
-                            <time dateTime={(post.publishedAt || post.createdAt).toISOString().slice(0, 10)}>
-                              {(post.publishedAt || post.createdAt).toLocaleDateString(locale, {
-                                month: "long",
-                                day: "numeric",
-                                year: "numeric"
-                              })}
-                            </time>
-                          </div>
-
-                          <div className="comments">
-                            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
-                            <data value="114">114</data>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
+          {/* Blog section entry hidden by product requirement */}
         </article>
       </main>
 
@@ -278,7 +236,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
           <div className="footer-top">
             <div className="footer-brand">
               <a href="#" className="logo">
-                <img src={site?.logoPath || "/assets/images/logo.svg"} alt={messages.site.logoAlt} />
+                <span className="text-3xl font-extrabold tracking-wide text-[var(--space-cadet)] md:text-4xl">{companyName}</span>
               </a>
 
               <p className="footer-text">
