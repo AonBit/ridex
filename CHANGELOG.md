@@ -1,3 +1,22 @@
+## v0.1.2 (2026-04-28)
+
+### Breaking Changes
+- 无
+
+### Features
+- 无
+
+### Fixes
+- 修正容器化部署中的鉴权主机信任配置，降低公网域名场景下登录与回调异常风险。
+
+### Improvements
+- 调整部署流程细节：单架构镜像构建、容器首启自动执行种子初始化，并补充部署文档与环境模板说明。
+
+### Others
+- 无
+
+Tests: not run (not requested)
+
 ## v0.1.1 (2026-04-28)
 
 ### Breaking Changes
