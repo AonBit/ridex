@@ -39,6 +39,11 @@ Seed admin credentials are in `.env`:
 docker compose up --build -d
 ```
 
+For public domain deployment, ensure these env vars are set correctly:
+- `NEXTAUTH_URL=https://your-domain.com`
+- `NEXTAUTH_SECRET=<random-long-string>`
+- `AUTH_TRUST_HOST=true`
+
 Persisted data:
 - `prisma/data.db`
 - `public/uploads/*`

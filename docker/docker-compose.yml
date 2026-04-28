@@ -10,4 +10,4 @@ services:
     volumes:
       - ./data:/app/data
       - ./uploads:/app/public/uploads
-    command: sh -c "npx prisma db push && npm run start"
+    command: sh -c "npx prisma db push && npm run prisma:seed && npm run start"

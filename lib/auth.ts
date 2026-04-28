@@ -10,6 +10,7 @@ const loginSchema = z.object({
 });
 
 const authConfig: NextAuthConfig = {
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
   providers: [
