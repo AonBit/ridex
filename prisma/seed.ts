@@ -174,6 +174,27 @@ async function main() {
         supportHours: locale === Locale.ja ? "サポート対応時間（入力してください）" : locale === Locale.en ? "Support Hours (Placeholder)" : "客服時間（請填寫）"
       }
     });
+
+    const footerRegionTitle =
+      locale === Locale.ja ? "Neighborhoods in Japan" : locale === Locale.en ? "Neighborhoods in Japan" : "日本熱門據點";
+    const footerRegionItems =
+      locale === Locale.ja
+        ? "Tokyo\nShinjuku\nShibuya\nGinza\nUeno\nYokohama\nOsaka\nKyoto"
+        : locale === Locale.en
+          ? "Tokyo\nShinjuku\nShibuya\nGinza\nUeno\nYokohama\nOsaka\nKyoto"
+          : "東京\n新宿\n澀谷\n銀座\n上野\n橫濱\n大阪\n京都";
+
+    await prisma.localizedText.upsert({
+      where: { key_locale: { key: "footer.region.title", locale } },
+      update: { value: footerRegionTitle },
+      create: { key: "footer.region.title", locale, value: footerRegionTitle }
+    });
+
+    await prisma.localizedText.upsert({
+      where: { key_locale: { key: "footer.region.items", locale } },
+      update: { value: footerRegionItems },
+      create: { key: "footer.region.items", locale, value: footerRegionItems }
+    });
   }
 }
 

@@ -274,3 +274,32 @@ export async function upsertCompanyInfo(formData: FormData) {
   revalidatePath("/en");
   revalidatePath("/zh-Hant");
 }
+
+export async function upsertFooterNeighborhoods(formData: FormData) {
+  const locale = String(formData.get("locale") ?? "ja");
+  const dbLocale = toDbLocale(locale);
+  const title = String(formData.get("footerRegionTitle") ?? "");
+  const itemsRaw = String(formData.get("footerRegionItems") ?? "");
+  const items = itemsRaw
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .join("\n");
+
+  await prisma.localizedText.upsert({
+    where: { key_locale: { key: "footer.region.title", locale: dbLocale } },
+    update: { value: title },
+    create: { key: "footer.region.title", locale: dbLocale, value: title }
+  });
+
+  await prisma.localizedText.upsert({
+    where: { key_locale: { key: "footer.region.items", locale: dbLocale } },
+    update: { value: items },
+    create: { key: "footer.region.items", locale: dbLocale, value: items }
+  });
+
+  revalidatePath("/");
+  revalidatePath("/ja");
+  revalidatePath("/en");
+  revalidatePath("/zh-Hant");
+}

@@ -40,19 +40,25 @@ const getStartSteps = [
 const footerCompany = ["About us", "Pricing plans", "Our blog", "Contacts"];
 const footerSupport = ["Help center", "Ask a question", "Privacy policy", "Terms & conditions"];
 const footerNeighborhoods = [
-  "Manhattan",
-  "Central New York City",
-  "Upper East Side",
-  "Queens",
-  "Theater District",
-  "Midtown",
-  "SoHo",
-  "Chelsea"
+  "Tokyo",
+  "Shinjuku",
+  "Shibuya",
+  "Ginza",
+  "Ueno",
+  "Yokohama",
+  "Osaka",
+  "Kyoto"
 ];
 
 export function PublicHome({ data, locale }: { data: PublicData; locale: string }) {
-  const { site, page, navItems, cars, blogPosts } = data;
+  const { site, page, navItems, cars, blogPosts, localizedTexts } = data;
   const messages = getMessages(data.locale);
+  const localizedMap = new Map(localizedTexts.map((entry) => [entry.key, entry.value]));
+  const footerRegionTitle = localizedMap.get("footer.region.title") || "Neighborhoods in Japan";
+  const footerRegionItems = (localizedMap.get("footer.region.items") || footerNeighborhoods.join("\n"))
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean);
 
   return (
     <>
@@ -317,6 +323,16 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
                   </a>
                 </li>
               ))}
+              <li>
+                <Link href={`/${locale}/legal/tokushoho`} className="footer-link">
+                  {messages.legal.tokushoho}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/company`} className="footer-link">
+                  {messages.legal.company}
+                </Link>
+              </li>
             </ul>
 
             <ul className="footer-list">
@@ -349,25 +365,15 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
 
             <ul className="footer-list">
               <li>
-                <p className="footer-list-title">Neighborhoods in New York</p>
+                <p className="footer-list-title">{footerRegionTitle}</p>
               </li>
-              {footerNeighborhoods.map((item) => (
+              {footerRegionItems.map((item) => (
                 <li key={item}>
                   <a href="#" className="footer-link">
                     {item}
                   </a>
                 </li>
               ))}
-              <li>
-                <Link href={`/${locale}/legal/tokushoho`} className="footer-link">
-                  {messages.legal.tokushoho}
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/company`} className="footer-link">
-                  {messages.legal.company}
-                </Link>
-              </li>
             </ul>
           </div>
 
