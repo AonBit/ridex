@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { AwaitedReturn } from "@/types/shared";
 import { getPublicData } from "@/lib/data";
 import { SiteBehavior } from "@/components/site/site-behavior";
-import { getMessages } from "@/lib/i18n";
+import { getMessages, type AppLocale } from "@/lib/i18n";
+import { LocaleSwitcher } from "@/components/shared/locale-switcher";
 
 type PublicData = AwaitedReturn<typeof getPublicData>;
 
@@ -17,7 +18,7 @@ const footerNeighborhoods = [
   "Kyoto"
 ];
 
-export function PublicHome({ data, locale }: { data: PublicData; locale: string }) {
+export function PublicHome({ data, locale }: { data: PublicData; locale: AppLocale }) {
   const { site, page, navItems, cars, localizedTexts } = data;
   const messages = getMessages(data.locale);
   const companyName = site?.companyName?.trim() || "Ridex";
@@ -73,6 +74,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
               <ion-icon name="car-outline"></ion-icon>
               <span id="aria-label-txt">{messages.site.exploreCars}</span>
             </Link>
+            <LocaleSwitcher locale={locale} />
 
             <a href="#" className="btn user-btn" aria-label={messages.site.profile}>
               <ion-icon name="person-outline"></ion-icon>
@@ -98,32 +100,7 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: string 
 
               <div className="hero-banner"></div>
 
-              <form action="" className="hero-form">
-                <div className="input-wrapper">
-                  <label htmlFor="input-1" className="input-label">
-                    {messages.site.carModelLabel}
-                  </label>
-                  <input type="text" name="car-model" id="input-1" className="input-field" placeholder={messages.site.carModelPlaceholder} />
-                </div>
-
-                <div className="input-wrapper">
-                  <label htmlFor="input-2" className="input-label">
-                    {messages.site.monthlyPaymentLabel}
-                  </label>
-                  <input type="text" name="monthly-pay" id="input-2" className="input-field" placeholder={messages.site.monthlyPaymentPlaceholder} />
-                </div>
-
-                <div className="input-wrapper">
-                  <label htmlFor="input-3" className="input-label">
-                    {messages.site.makeYearLabel}
-                  </label>
-                  <input type="text" name="year" id="input-3" className="input-field" placeholder={messages.site.makeYearPlaceholder} />
-                </div>
-
-                <button type="submit" className="btn">
-                  {messages.site.search}
-                </button>
-              </form>
+              {/* Hero search form removed by requirement */}
             </div>
           </section>
 

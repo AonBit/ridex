@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getPublicData } from "@/lib/data";
 import { PublicHome } from "@/components/site/public-home";
 import { ThemeInjector } from "@/components/site/theme-injector";
-import { isSupportedLocale } from "@/lib/i18n";
+import { isSupportedLocale, type AppLocale } from "@/lib/i18n";
 
 export default async function LocalizedPage({ params }: { params: { locale: string } }) {
   if (!isSupportedLocale(params.locale)) notFound();
@@ -12,7 +12,7 @@ export default async function LocalizedPage({ params }: { params: { locale: stri
   return (
     <>
       <ThemeInjector theme={data.theme} />
-      <PublicHome data={data} locale={params.locale} />
+      <PublicHome data={data} locale={params.locale as AppLocale} />
     </>
   );
 }
