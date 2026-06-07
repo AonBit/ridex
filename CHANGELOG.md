@@ -1,3 +1,22 @@
+## v0.1.5 (2026-06-07)
+
+### Breaking Changes
+- 无
+
+### Features
+- 无
+
+### Fixes
+- 修复 Docker 运行镜像缺少法务模板目录，导致容器内 seed 无法读取 Markdown 模板的问题。
+
+### Improvements
+- 无
+
+### Others
+- 无
+
+Tests: not run (not requested)
+
 ## v0.1.4 (2026-06-07)
 
 ### Breaking Changes

@@ -1,6 +1,6 @@
 {
   "name": "ridex-template-platform",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "upgrade:steps": "sh scripts/upgrade-steps.sh",
