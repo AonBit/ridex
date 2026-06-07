@@ -1,3 +1,24 @@
+## v0.1.4 (2026-06-07)
+
+### Breaking Changes
+- 无
+
+### Features
+- 无
+
+### Fixes
+- 修复反向代理场景下的 Auth.js 回调异常（UnknownAction），并识别 X-Forwarded 请求头。
+- 修复 Server Actions 在 Docker 部署中的加密密钥不一致问题，避免登录/退出动作失效。
+
+### Improvements
+- 将登录与退出逻辑集中到 server actions，简化页面组件调用方式。
+- 补充 AUTH_SECRET、NEXT_SERVER_ACTIONS_ENCRYPTION_KEY 等生产环境配置说明与排障指南。
+
+### Others
+- 无
+
+Tests: not run (not requested)
+
 ## v0.1.3 (2026-06-07)
 
 ### Breaking Changes
