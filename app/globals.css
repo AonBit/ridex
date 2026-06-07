@@ -67,10 +67,30 @@
   text-align: left;
 }
 
-.legal-content--tokushoho .legal-tokushoho-table th {
-  width: 28%;
+.legal-content--tokushoho .legal-tokushoho-table th,
+.legal-content table th {
   background: #f1f5f9;
   font-weight: 600;
+}
+
+.legal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+.legal-content table th,
+.legal-content table td {
+  border: 1px solid #cbd5e1;
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+  text-align: left;
+}
+
+.legal-content table th {
+  width: 28%;
   white-space: nowrap;
 }
 
@@ -81,4 +101,8 @@
 .admin-shell .vditor-host .vditor {
   border-radius: 0.75rem;
   border-color: #e2e8f0;
+}
+
+.admin-shell .vditor-preview__action {
+  display: none;
 }

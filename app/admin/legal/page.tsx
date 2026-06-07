@@ -2,14 +2,14 @@ import { LegalContentType, Locale } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { LegalPageForm } from "@/components/admin/legal-page-form";
 import { SectionCard } from "@/components/forms/base";
-import { TOKUSHOHO_TEMPLATE_HTML } from "@/lib/legal-templates/tokushoho";
+import { TOKUSHOHO_TEMPLATE_MD } from "@/lib/legal-templates/tokushoho";
 import { getMessages, type AppLocale } from "@/lib/i18n";
 
 const legalSlugs = [
-  { slug: "tokushoho", key: "tokushoho", mode: "wysiwyg" as const, contentType: LegalContentType.TEXT },
-  { slug: "privacy", key: "privacy", mode: "sv" as const, contentType: LegalContentType.MARKDOWN },
-  { slug: "anti-social-policy", key: "antiSocialPolicy", mode: "sv" as const, contentType: LegalContentType.MARKDOWN },
-  { slug: "rental-terms", key: "rentalTerms", mode: "sv" as const, contentType: LegalContentType.MARKDOWN }
+  { slug: "tokushoho", key: "tokushoho" },
+  { slug: "privacy", key: "privacy" },
+  { slug: "anti-social-policy", key: "antiSocialPolicy" },
+  { slug: "rental-terms", key: "rentalTerms" }
 ] as const;
 
 export default async function LegalPage({ params }: { params?: { locale?: AppLocale } }) {
@@ -31,14 +31,13 @@ export default async function LegalPage({ params }: { params?: { locale?: AppLoc
             <LegalPageForm
               key={entry.slug}
               slug={entry.slug}
-              contentType={entry.contentType}
-              mode={entry.mode}
               titleLabel={`${legalTitle} ${t.titleSuffix}`}
-              contentLabel={isTokushoho ? t.htmlContent : t.markdownContent}
+              contentLabel={t.markdownContent}
               defaultTitle={current?.title ?? legalTitle}
-              defaultContent={current?.content ?? (isTokushoho ? TOKUSHOHO_TEMPLATE_HTML : "")}
+              defaultContent={current?.content ?? (isTokushoho ? TOKUSHOHO_TEMPLATE_MD : "")}
               saveLabel={t.save}
-              restoreTemplate={isTokushoho ? TOKUSHOHO_TEMPLATE_HTML : undefined}
+              savedLabel={t.saved}
+              restoreTemplate={isTokushoho ? TOKUSHOHO_TEMPLATE_MD : undefined}
               restoreLabel={isTokushoho ? t.restoreTemplate : undefined}
               confirmRestore={isTokushoho ? t.confirmRestoreTemplate : undefined}
             />

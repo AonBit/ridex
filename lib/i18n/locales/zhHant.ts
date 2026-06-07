@@ -240,6 +240,7 @@ export default {
       preview: "預覽",
       restoreTemplate: "還原模板",
       confirmRestoreTemplate: "以特商法模板覆蓋目前內容？",
+      saved: "已儲存",
       save: "儲存"
     },
     companyPage: {

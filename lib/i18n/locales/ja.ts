@@ -232,7 +232,7 @@ export default {
     },
     legalPage: {
       title: "法務コンテンツ",
-      desc: "法務ページは日本語のみ編集・公開します。特商法は WYSIWYG、他ページは Markdown（SV）です。",
+      desc: "法務ページは日本語のみ編集・公開します。すべて Markdown（SV 分屏）で編集します。",
       titleSuffix: "タイトル",
       markdownContent: "Markdown 本文",
       htmlContent: "HTML 本文",
@@ -240,6 +240,7 @@ export default {
       preview: "プレビュー",
       restoreTemplate: "テンプレートを復元",
       confirmRestoreTemplate: "特商法テンプレートで上書きします。よろしいですか？",
+      saved: "保存しました",
       save: "保存"
     },
     companyPage: {

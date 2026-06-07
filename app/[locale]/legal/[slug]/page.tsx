@@ -16,7 +16,7 @@ export default async function LegalSlugPage({ params }: { params: { locale: stri
   if (!page) notFound();
 
   const format = resolveLegalContentFormat(page.slug, page.content, page.contentType);
-  const html = await renderLegalContent(page.content, format);
+  const html = renderLegalContent(page.content, format);
   const messages = getMessages(params.locale);
   const showJapaneseOnlyNotice = params.locale !== "ja";
 
@@ -33,7 +33,7 @@ export default async function LegalSlugPage({ params }: { params: { locale: stri
         </p>
       ) : null}
       <article
-        className={`legal-content vditor-reset max-w-none rounded-xl bg-white p-6 shadow ${page.slug === "tokushoho" ? "legal-content--tokushoho" : ""}`}
+        className="legal-content vditor-reset max-w-none rounded-xl bg-white p-6 shadow"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </main>

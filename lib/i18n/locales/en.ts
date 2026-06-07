@@ -240,6 +240,7 @@ export default {
       preview: "Preview",
       restoreTemplate: "Restore template",
       confirmRestoreTemplate: "Replace with the tokushoho template?",
+      saved: "Saved",
       save: "Save"
     },
     companyPage: {
