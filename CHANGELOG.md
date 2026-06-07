@@ -1,3 +1,22 @@
+## v0.1.6 (2026-06-07)
+
+### Breaking Changes
+- 无
+
+### Features
+- 无
+
+### Fixes
+- 优化车辆卡片标题展示：名称为空或占位符时回退显示品牌，并依据字段可见性控制副标题。
+
+### Improvements
+- 调整车辆卡片标题区域布局与多行截断样式，提升长标题可读性。
+
+### Others
+- 无
+
+Tests: not run (not requested)
+
 ## v0.1.5 (2026-06-07)
 
 ### Breaking Changes
