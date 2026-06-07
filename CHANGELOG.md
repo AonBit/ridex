@@ -1,3 +1,26 @@
+## v0.1.3 (2026-06-07)
+
+### Breaking Changes
+- 无
+
+### Features
+- 重构后台运营流程：车辆改为列表与独立编辑页，支持发布/下架/删除与字段可见性配置。
+- 移除博客模块，FAQ 与导航支持完整增删改，首页内容改为按语言维护。
+- 新增租赁 CTA 跳转策略（电话/邮件/WhatsApp/链接）与前台 FAQ 展示。
+- 媒体存储迁移至 `data/uploads`，通过 `/api/media` 提供访问，并新增启动/部署自动升级脚本。
+
+### Fixes
+- 无
+
+### Improvements
+- 法务页统一采用 Vditor Markdown 编辑，特商法模板迁移为 Markdown 表格。
+- 前台法务渲染改用 markdown-it，并补充表格样式与保存反馈体验。
+
+### Others
+- 同步更新部署文档、环境变量模板与种子数据。
+
+Tests: not run (not requested)
+
 ## v0.1.2 (2026-04-28)
 
 ### Breaking Changes
