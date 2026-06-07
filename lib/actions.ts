@@ -1,7 +1,9 @@
 "use server";
 
+import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { signIn, signOut } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { parseFieldVisibilityFromForm } from "@/lib/car-visibility";
 import { toDbLocale } from "@/lib/i18n/locale-db";
@@ -428,4 +430,26 @@ export async function upsertFooterNeighborhoods(formData: FormData) {
   revalidatePath("/ja");
   revalidatePath("/en");
   revalidatePath("/zh-Hant");
+}
+
+export async function loginWithCredentials(formData: FormData) {
+  const locale = String(formData.get("locale") ?? "ja");
+
+  try {
+    await signIn("credentials", {
+      email: String(formData.get("email")),
+      password: String(formData.get("password")),
+      redirectTo: `/${locale}/admin`
+    });
+  } catch (error) {
+    if (error instanceof AuthError && error.type === "CredentialsSignin") {
+      redirect(`/${locale}/login?error=credentials`);
+    }
+    throw error;
+  }
+}
+
+export async function signOutFromAdmin(formData: FormData) {
+  const locale = String(formData.get("locale") ?? "ja");
+  await signOut({ redirectTo: `/${locale}/login` });
 }

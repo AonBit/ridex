@@ -1,4 +1,5 @@
-import { auth, signOut } from "@/lib/auth";
+import { auth } from "@/lib/auth";
+import { signOutFromAdmin } from "@/lib/actions";
 import { getMessages, type AppLocale } from "@/lib/i18n";
 import { LocaleSwitcher } from "@/components/shared/locale-switcher";
 
@@ -19,12 +20,8 @@ export async function AdminHeader({
       </div>
       <div className="flex items-center gap-2">
         <LocaleSwitcher locale={locale} />
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: `/${locale}/login` });
-          }}
-        >
+        <form action={signOutFromAdmin}>
+          <input type="hidden" name="locale" value={locale} />
           <button className="rounded-lg border border-slate-300 px-4 py-2 text-sm">{messages.admin.signOut}</button>
         </form>
       </div>

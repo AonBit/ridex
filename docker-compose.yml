@@ -1,6 +1,9 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: ${NEXT_SERVER_ACTIONS_ENCRYPTION_KEY}
     ports:
       - "3000:3000"
     env_file:

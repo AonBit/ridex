@@ -5,6 +5,8 @@ RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
 FROM node:20-alpine AS builder
 WORKDIR /app
+ARG NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
+ENV NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=${NEXT_SERVER_ACTIONS_ENCRYPTION_KEY}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate

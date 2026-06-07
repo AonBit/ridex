@@ -61,9 +61,19 @@ For local production-style runs: `npm run start` (auto-upgrades via `prestart`)
 `npm run dev` and `npm run start` both run [`scripts/upgrade-steps.sh`](scripts/upgrade-steps.sh) automatically before launching the app.
 
 For public domain deployment, ensure these env vars are set correctly:
-- `NEXTAUTH_URL=https://your-domain.com`
-- `NEXTAUTH_SECRET=<random-long-string>`
-- `AUTH_TRUST_HOST=true`
+- `NEXTAUTH_URL=https://your-domain.com` (site root, **not** `/api/auth`)
+- `AUTH_SECRET` or `NEXTAUTH_SECRET` — random long string
+- `AUTH_TRUST_HOST=true` (required behind Synology/nginx reverse proxy)
+- `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` — `openssl rand -base64 32`; **must be identical at Docker build and runtime**
+
+Do **not** set `AUTH_URL` unless you know you need it; a wrong value causes `[auth][error] UnknownAction`.
+
+If you pull a pre-built image from GHCR, rebuild locally with your `.env` so the Server Actions key is baked into the image:
+
+```bash
+docker compose build --no-cache
+docker compose up -d
+```
 
 Persisted data (survives upgrades):
 - `data/data.db` (SQLite)

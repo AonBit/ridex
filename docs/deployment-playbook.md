@@ -1,8 +1,12 @@
 # Deployment Playbook (Single-Customer Private Instance)
 
 ## 1. Prepare Environment
-- Copy `.env.example` to `.env`
-- Set `NEXTAUTH_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`
+- Copy `.env.example` to `.env` (local) or `docker/.env.example` to `docker/.env`
+- Set `AUTH_SECRET` / `NEXTAUTH_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`
+- Set `NEXTAUTH_URL` to your public site URL (e.g. `https://rent.example.com`), not `/api/auth`
+- Set `AUTH_TRUST_HOST=true` when behind a reverse proxy (Synology, nginx, Cloudflare)
+- Generate and set `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` (`openssl rand -base64 32`); use the **same value** when building the Docker image and when running the container
+- Do not set `AUTH_URL` unless required — incorrect values cause Auth.js `UnknownAction` errors
 - Local dev: `DATABASE_URL=file:./prisma/data.db`, `UPLOAD_DIR=./data/uploads`
 - Docker (`docker/`): `DATABASE_URL=file:/app/data/data.db`, `UPLOAD_DIR=./data/uploads`
 
@@ -50,3 +54,16 @@ No manual migration steps are required unless you are restoring from backup.
 - Fleet cards visible and sorted
 - Blog/FAQ toggles and content display
 - Export/import endpoints reachable
+
+## 7. Troubleshooting
+
+### `Failed to find Server Action "0000…"` or `reading 'workers'`
+- Set `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` in `.env`, rebuild the image (`docker compose build --no-cache`), then redeploy
+- Hard-refresh the browser (Ctrl+Shift+R) after redeploy — old cached JS may reference stale action IDs
+- Short action IDs like `"x"` in logs are usually bot probes; safe to ignore
+
+### `[auth][error] UnknownAction: Cannot parse action at /api/auth/*`
+- Verify `NEXTAUTH_URL` matches the public URL users visit (https + correct hostname)
+- Set `AUTH_TRUST_HOST=true`
+- Remove `AUTH_URL` from `.env` if present
+- Ensure the reverse proxy forwards `X-Forwarded-Host` and `X-Forwarded-Proto` to the container
