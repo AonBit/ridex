@@ -1,11 +1,15 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 
-const uploadDir = process.env.UPLOAD_DIR ?? "./public/uploads";
+const uploadDir = process.env.UPLOAD_DIR ?? "./data/uploads";
+
+export function getUploadDir() {
+  return path.resolve(uploadDir);
+}
 
 export async function saveUpload(file: File) {
   const fileName = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-  const targetDir = path.resolve(uploadDir);
+  const targetDir = getUploadDir();
   await mkdir(targetDir, { recursive: true });
 
   const bytes = await file.arrayBuffer();
@@ -15,7 +19,7 @@ export async function saveUpload(file: File) {
 
   return {
     fileName,
-    path: `/uploads/${fileName}`,
+    path: `/api/media/${fileName}`,
     size: buffer.byteLength,
     mimeType: file.type || "application/octet-stream"
   };

@@ -7,7 +7,7 @@ export async function GET() {
     prisma.themeConfig.findUnique({ where: { id: 1 } }),
     prisma.pageContent.findUnique({ where: { id: 1 } }),
     prisma.navItem.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.fleetCar.findMany({ include: { media: true }, orderBy: { sortOrder: "asc" } }),
+    prisma.fleetCar.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.blogPost.findMany({ orderBy: { updatedAt: "desc" } }),
     prisma.faqItem.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.whyUsItem.findMany({ orderBy: { order: "asc" } })

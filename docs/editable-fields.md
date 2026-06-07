@@ -3,6 +3,7 @@
 ## Brand
 - Company name, tagline, logo path, favicon path
 - Phone, email, WhatsApp/WeChat, address, business hours
+- Rent-now CTA type (phone / email / WhatsApp / URL) and optional custom target
 - Footer copyright and legal notice
 
 ## Theme
@@ -12,27 +13,32 @@
 - Border radius, card shadow, heading/body fonts
 
 ## Homepage Content
-- Hero title/subtitle/CTA text/CTA link
-- Featured/Why us/Blog/FAQ section titles
-- Visibility toggles: Why us, Testimonials, Blog, FAQ
-- SEO title/description
+- Per locale (`ja`, `en`, `zh-Hant`) via localized keys:
+  - Hero title/subtitle/CTA text/CTA link
+  - Featured section title, steps section title, FAQ section title
+  - SEO title/description
+- Global toggles: show steps section, show FAQ section
 
 ## Fleet
 - Name, brand, year, seats
 - Fuel type, transmission, price label, mileage label
 - Cover image path
-- Featured/published status and sort order
-
-## Blog
-- Title, excerpt, body, cover path
-- Published status
+- Field visibility toggles (JSON): brand, year, seats, fuelType, mileage, transmission, price
+- Published status and sort order
+- Single language (not localized per vehicle)
 
 ## FAQ
 - Question, answer, sort order
+- Per locale (`ja`, `en`, `zh-Hant`)
 
 ## Navigation
-- Label, href, type, visibility, sort order
+- Label, href, type (internal/external), visibility, sort order
 
 ## Media Library
 - File upload, file metadata (path/type/size)
 - Optional usage reference (`usedBy`)
+
+## Legal & Company (per locale)
+- Legal pages: privacy, tokushoho, anti-social policy, rental terms
+- Company disclosure fields
+- Footer region title and items

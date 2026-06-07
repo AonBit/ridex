@@ -6,6 +6,5 @@ services:
     env_file:
       - .env
     volumes:
-      - ./prisma:/app/prisma
-      - ./public/uploads:/app/public/uploads
-    command: sh -c "npx prisma generate && npx prisma db push && npm run start"
+      - ./data:/app/data
+    command: sh scripts/upgrade.sh

@@ -56,7 +56,7 @@ async function main() {
 
   await prisma.pageContent.upsert({
     where: { id: 1 },
-    update: {},
+    update: { showFaq: true, showBlog: false, showTestimonials: false },
     create: {
       id: 1,
       heroTitle: "日本で手軽にレンタカー予約",
@@ -69,8 +69,8 @@ async function main() {
       sectionFaqTitle: "よくある質問",
       showWhyUs: true,
       showTestimonials: false,
-      showFaq: false,
-      showBlog: true,
+      showFaq: true,
+      showBlog: false,
       seoTitle: "Ridex - 日本向けレンタカー",
       seoDescription: "Ridex は日本市場向けの多言語レンタカーサイトテンプレートです。"
     }
@@ -81,8 +81,7 @@ async function main() {
       data: [
         { label: "Home", href: "#home", sortOrder: 1 },
         { label: "Cars", href: "#featured-car", sortOrder: 2 },
-        { label: "About", href: "#", sortOrder: 3 },
-        { label: "Blog", href: "#blog", sortOrder: 4 }
+        { label: "FAQ", href: "#faq", sortOrder: 3 }
       ]
     });
   }
@@ -100,16 +99,64 @@ async function main() {
     });
   }
 
-  if (!(await prisma.blogPost.count())) {
-    await prisma.blogPost.createMany({
+  if (!(await prisma.faqItem.count())) {
+    await prisma.faqItem.createMany({
       data: [
-        { title: "Opening of new offices of the company", slug: "opening-of-new-offices-of-the-company", excerpt: "Company", body: "Opening of new offices of the company", coverPath: "/assets/images/blog-1.jpg", isPublished: true, publishedAt: new Date("2022-01-14") },
-        { title: "What cars are most vulnerable", slug: "what-cars-are-most-vulnerable", excerpt: "Repair", body: "What cars are most vulnerable", coverPath: "/assets/images/blog-2.jpg", isPublished: true, publishedAt: new Date("2022-01-14") },
-        { title: "Statistics showed which average age", slug: "statistics-showed-which-average-age", excerpt: "Cars", body: "Statistics showed which average age", coverPath: "/assets/images/blog-3.jpg", isPublished: true, publishedAt: new Date("2022-01-14") },
-        { title: "What´s required when renting a car?", slug: "whats-required-when-renting-a-car", excerpt: "Cars", body: "What´s required when renting a car?", coverPath: "/assets/images/blog-4.jpg", isPublished: true, publishedAt: new Date("2022-01-14") },
-        { title: "New rules for handling our cars", slug: "new-rules-for-handling-our-cars", excerpt: "Company", body: "New rules for handling our cars", coverPath: "/assets/images/blog-5.jpg", isPublished: true, publishedAt: new Date("2022-01-14") }
+        { locale: Locale.ja, question: "予約に必要な書類は？", answer: "運転免許証と身分証明書をご用意ください。", sortOrder: 1 },
+        { locale: Locale.ja, question: "キャンセルは可能ですか？", answer: "ご利用条件に応じてキャンセル可能です。詳細はお問い合わせください。", sortOrder: 2 },
+        { locale: Locale.en, question: "What documents do I need?", answer: "Please bring a valid driver's license and ID.", sortOrder: 1 },
+        { locale: Locale.en, question: "Can I cancel my booking?", answer: "Cancellation depends on your rental terms. Contact us for details.", sortOrder: 2 },
+        { locale: Locale.zh_Hant, question: "租車需要哪些證件？", answer: "請攜帶有效駕照與身分證件。", sortOrder: 1 },
+        { locale: Locale.zh_Hant, question: "可以取消預約嗎？", answer: "依租賃條款而定，詳情請聯絡我們。", sortOrder: 2 }
       ]
     });
+  }
+
+  const pageContentByLocale = {
+    [Locale.ja]: {
+      "page.heroTitle": "日本で手軽にレンタカー予約",
+      "page.heroSubtitle": "東京・神奈川・大阪エリアに対応",
+      "page.heroCtaText": "車両を見る",
+      "page.heroCtaLink": "#featured-car",
+      "page.sectionFeaturedTitle": "おすすめ車両",
+      "page.sectionWhyUsTitle": "4つのステップで利用開始",
+      "page.sectionFaqTitle": "よくある質問",
+      "page.seoTitle": "Ridex - 日本向けレンタカー",
+      "page.seoDescription": "Ridex は日本市場向けの多言語レンタカーサイトテンプレートです。"
+    },
+    [Locale.en]: {
+      "page.heroTitle": "Rent a car in Japan with ease",
+      "page.heroSubtitle": "Serving Tokyo, Kanagawa, and Osaka areas",
+      "page.heroCtaText": "Explore cars",
+      "page.heroCtaLink": "#featured-car",
+      "page.sectionFeaturedTitle": "Featured vehicles",
+      "page.sectionWhyUsTitle": "Get started in 4 simple steps",
+      "page.sectionFaqTitle": "Frequently asked questions",
+      "page.seoTitle": "Ridex - Car rental in Japan",
+      "page.seoDescription": "Ridex is a multilingual car rental website template for the Japan market."
+    },
+    [Locale.zh_Hant]: {
+      "page.heroTitle": "輕鬆在日本租車",
+      "page.heroSubtitle": "服務東京、神奈川、大阪等地區",
+      "page.heroCtaText": "查看車款",
+      "page.heroCtaLink": "#featured-car",
+      "page.sectionFeaturedTitle": "推薦車款",
+      "page.sectionWhyUsTitle": "4 個步驟快速開始",
+      "page.sectionFaqTitle": "常見問題",
+      "page.seoTitle": "Ridex - 日本租車",
+      "page.seoDescription": "Ridex 是面向日本市場的多語言租車網站模板。"
+    }
+  } as const;
+
+  for (const locale of [Locale.ja, Locale.en, Locale.zh_Hant]) {
+    const entries = pageContentByLocale[locale];
+    for (const [key, value] of Object.entries(entries)) {
+      await prisma.localizedText.upsert({
+        where: { key_locale: { key, locale } },
+        update: { value },
+        create: { key, locale, value }
+      });
+    }
   }
 
   const legalSeed = {

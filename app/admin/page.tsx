@@ -9,9 +9,9 @@ export default async function AdminPage({ params }: { params?: { locale?: AppLoc
   const t = getMessages(locale).admin.dashboard;
   const cards = [
     [t.cards[0], data.cars.length, "cars"],
-    [t.cards[2], data.faq.length, "faq"],
-    [t.cards[3], data.media.length, "media"],
-    [t.cards[4], data.navItems.length, "navigation"]
+    [t.cards[1], data.faq.length, "faq"],
+    [t.cards[2], data.media.length, "media"],
+    [t.cards[3], data.navItems.length, "navigation"]
   ] as const;
 
   return (
@@ -23,7 +23,7 @@ export default async function AdminPage({ params }: { params?: { locale?: AppLoc
       </form>
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map(([label, value, href]) => (
-          <Link key={href} href={href} className="rounded-xl border border-slate-200 p-4 hover:border-slate-400">
+          <Link key={href} href={`/${locale}/admin/${href}`} className="rounded-xl border border-slate-200 p-4 hover:border-slate-400">
             <p className="text-sm text-slate-500">{label}</p>
             <p className="text-2xl font-semibold">{value}</p>
           </Link>

@@ -65,6 +65,35 @@ export function CheckField({ name, label, defaultChecked }: { name: string; labe
   );
 }
 
+export function SelectField({
+  name,
+  label,
+  defaultValue,
+  options
+}: {
+  name: string;
+  label: string;
+  defaultValue?: string;
+  options: { value: string; label: string }[];
+}) {
+  return (
+    <label className="block text-sm">
+      <span className="mb-1 block text-slate-600">{label}</span>
+      <select
+        name={name}
+        defaultValue={defaultValue ?? options[0]?.value}
+        className="w-full border-0 border-b-2 border-slate-300 bg-transparent px-1 py-2 outline-none transition duration-200 focus:-translate-y-0.5 focus:border-sky-500"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 export function SubmitButton({ label = "Save changes" }: { label?: string }) {
   return <button className="admin-button rounded-lg px-4 py-2 text-sm text-white">{label}</button>;
 }

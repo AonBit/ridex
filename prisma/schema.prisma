@@ -18,7 +18,7 @@ model User {
 }
 
 model SiteConfig {
-  id               Int      @id @default(1)
+  id               Int         @id @default(1)
   companyName      String
   companyTagline   String
   contactPhone     String
@@ -28,10 +28,12 @@ model SiteConfig {
   businessHours    String
   logoPath         String?
   faviconPath      String?
+  rentCtaType      RentCtaType @default(phone)
+  rentCtaTarget    String?
   footerCopyright  String
   legalNotice      String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
 }
 
 model ThemeConfig {
@@ -85,31 +87,21 @@ model WhyUsItem {
 }
 
 model FleetCar {
-  id             String    @id @default(cuid())
-  name           String
-  brand          String
-  year           Int
-  seats          Int
-  fuelType       String
-  transmission   String
-  priceLabel     String
-  mileageLabel   String
-  coverImagePath String
-  isFeatured     Boolean   @default(true)
-  isPublished    Boolean   @default(true)
-  sortOrder      Int       @default(0)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  media          CarMedia[]
-}
-
-model CarMedia {
-  id        String   @id @default(cuid())
-  carId     String
-  path      String
-  altText   String?
-  sortOrder Int      @default(0)
-  car       FleetCar @relation(fields: [carId], references: [id], onDelete: Cascade)
+  id              String   @id @default(cuid())
+  name            String
+  brand           String
+  year            Int
+  seats           Int
+  fuelType        String
+  transmission    String
+  priceLabel      String
+  mileageLabel    String
+  coverImagePath  String
+  fieldVisibility Json?
+  isPublished     Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model BlogPost {
@@ -149,6 +141,7 @@ model MediaAsset {
 
 model FaqItem {
   id        String   @id @default(cuid())
+  locale    Locale   @default(ja)
   question  String
   answer    String
   sortOrder Int      @default(0)
@@ -215,4 +208,11 @@ enum Locale {
 enum LegalContentType {
   TEXT
   MARKDOWN
+}
+
+enum RentCtaType {
+  phone
+  email
+  whatsapp
+  url
 }

@@ -6,7 +6,7 @@ A private-deployable car rental website template with an admin panel.
 - Next.js 14 + TypeScript
 - Prisma + SQLite
 - NextAuth (credentials)
-- Local disk media storage (`public/uploads`)
+- Local disk media storage (`data/uploads`, served via `/api/media`)
 - Docker Compose deployment
 
 ## Scope
@@ -22,7 +22,7 @@ A private-deployable car rental website template with an admin panel.
    ```bash
    ./scripts/bootstrap.sh
    ```
-3. Start dev server:
+3. Start dev server (schema/media/seed auto-upgrade via `predev`):
    ```bash
    npm run dev
    ```
@@ -39,17 +39,39 @@ Seed admin credentials are in `.env`:
 docker compose up --build -d
 ```
 
+### Automatic upgrade on startup
+
+Every container start runs [`scripts/upgrade.sh`](scripts/upgrade.sh):
+
+1. `prisma generate` — refresh client
+2. `prisma db push --accept-data-loss` — apply schema changes
+3. `migrate-uploads.mjs` — copy legacy `public/uploads` files and rewrite `/uploads/` paths to `/api/media/`
+4. `prisma:seed` — idempotent bootstrap data
+5. `next start` — serve the app
+
+Pull a newer image and restart to upgrade an existing instance:
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+For local production-style runs: `npm run start` (auto-upgrades via `prestart`)
+
+`npm run dev` and `npm run start` both run [`scripts/upgrade-steps.sh`](scripts/upgrade-steps.sh) automatically before launching the app.
+
 For public domain deployment, ensure these env vars are set correctly:
 - `NEXTAUTH_URL=https://your-domain.com`
 - `NEXTAUTH_SECRET=<random-long-string>`
 - `AUTH_TRUST_HOST=true`
 
-Persisted data:
-- `prisma/data.db`
-- `public/uploads/*`
+Persisted data (survives upgrades):
+- `data/data.db` (SQLite)
+- `data/uploads/*` (uploaded media)
 
 ## APIs
 - `POST /api/upload` (multipart file)
+- `GET /api/media/[filename]` (uploaded media)
 - `GET /api/theme`
 - `GET /api/export`
 - `POST /api/import`

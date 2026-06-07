@@ -1,6 +1,9 @@
 import Link from "next/link";
 import type { AwaitedReturn } from "@/types/shared";
 import { getPublicData } from "@/lib/data";
+import { shouldRenderField } from "@/lib/car-visibility";
+import { resolveMediaUrl } from "@/lib/media-url";
+import { resolveRentCtaHref } from "@/lib/rent-cta";
 import { SiteBehavior } from "@/components/site/site-behavior";
 import { getMessages, type AppLocale } from "@/lib/i18n";
 import { LocaleSwitcher } from "@/components/shared/locale-switcher";
@@ -19,10 +22,11 @@ const footerNeighborhoods = [
 ];
 
 export function PublicHome({ data, locale }: { data: PublicData; locale: AppLocale }) {
-  const { site, page, navItems, cars, localizedTexts } = data;
+  const { site, page, navItems, cars, faq, localizedTexts } = data;
   const messages = getMessages(data.locale);
   const companyName = site?.companyName?.trim() || "Ridex";
-  const visibleNavItems = navItems.filter((item) => item.href !== "#blog");
+  const rentHref = resolveRentCtaHref(site);
+  const visibleNavItems = navItems;
   const getStartSteps = [
     { iconClass: "icon-1", icon: "person-add-outline", ...messages.site.steps[0], hasLink: true },
     { iconClass: "icon-2", icon: "car-outline", ...messages.site.steps[1], hasLink: false },
@@ -120,53 +124,66 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: AppLoca
                   <li key={car.id}>
                     <div className="featured-car-card">
                       <figure className="card-banner">
-                        <img src={car.coverImagePath} alt={`${car.name} ${car.year}`} loading="lazy" width="440" height="300" className="w-100" />
+                        <img src={resolveMediaUrl(car.coverImagePath)} alt={`${car.name} ${car.year}`} loading="lazy" width="440" height="300" className="w-100" />
                       </figure>
 
                       <div className="card-content">
                         <div className="card-title-wrapper">
-                          <h3 className="h3 card-title">
-                            <a href="#">{car.name}</a>
-                          </h3>
+                          <div className="card-title-block">
+                            <h3 className="h3 card-title">
+                              <a href="#">{car.name}</a>
+                            </h3>
+                            {shouldRenderField(car, "brand", car.brand) ? (
+                              <p className="card-brand-subtitle">{car.brand}</p>
+                            ) : null}
+                          </div>
 
-                          <data className="year" value={car.year}>
-                            {car.year}
-                          </data>
+                          {shouldRenderField(car, "year", String(car.year)) ? (
+                            <data className="year" value={car.year}>
+                              {car.year}
+                            </data>
+                          ) : null}
                         </div>
 
                         <ul className="card-list">
-                          <li className="card-list-item">
-                            <ion-icon name="people-outline"></ion-icon>
-                            <span className="card-item-text">
-                              {car.seats} {messages.site.peopleSuffix}
-                            </span>
-                          </li>
-                          <li className="card-list-item">
-                            <ion-icon name="flash-outline"></ion-icon>
-                            <span className="card-item-text">{car.fuelType}</span>
-                          </li>
-                          <li className="card-list-item">
-                            <ion-icon name="speedometer-outline"></ion-icon>
-                            <span className="card-item-text">{car.mileageLabel}</span>
-                          </li>
-                          <li className="card-list-item">
-                            <ion-icon name="hardware-chip-outline"></ion-icon>
-                            <span className="card-item-text">{car.transmission}</span>
-                          </li>
+                          {shouldRenderField(car, "seats", String(car.seats)) ? (
+                            <li className="card-list-item">
+                              <ion-icon name="people-outline"></ion-icon>
+                              <span className="card-item-text">
+                                {car.seats} {messages.site.peopleSuffix}
+                              </span>
+                            </li>
+                          ) : null}
+                          {shouldRenderField(car, "fuelType", car.fuelType) ? (
+                            <li className="card-list-item">
+                              <ion-icon name="flash-outline"></ion-icon>
+                              <span className="card-item-text">{car.fuelType}</span>
+                            </li>
+                          ) : null}
+                          {shouldRenderField(car, "mileage", car.mileageLabel) ? (
+                            <li className="card-list-item">
+                              <ion-icon name="speedometer-outline"></ion-icon>
+                              <span className="card-item-text">{car.mileageLabel}</span>
+                            </li>
+                          ) : null}
+                          {shouldRenderField(car, "transmission", car.transmission) ? (
+                            <li className="card-list-item">
+                              <ion-icon name="hardware-chip-outline"></ion-icon>
+                              <span className="card-item-text">{car.transmission}</span>
+                            </li>
+                          ) : null}
                         </ul>
 
                         <div className="card-price-wrapper">
-                          <p className="card-price">
-                            <strong>{car.priceLabel.replace(/\/.*/, "")}</strong> {messages.site.perDay}
-                          </p>
+                          {shouldRenderField(car, "price", car.priceLabel) ? (
+                            <p className="card-price">
+                              <strong>{car.priceLabel.replace(/\/.*/, "")}</strong> {messages.site.perDay}
+                            </p>
+                          ) : null}
 
-                          <button className="btn fav-btn" aria-label={messages.site.addToFavourite} type="button">
-                            <ion-icon name="heart-outline"></ion-icon>
-                          </button>
-
-                          <button className="btn" type="button">
+                          <a href={rentHref} className="btn">
                             {messages.site.rentNow}
-                          </button>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -176,35 +193,53 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: AppLoca
             </div>
           </section>
 
-          <section className="section get-start">
-            <div className="container">
-              <h2 className="h2 section-title">{messages.site.getStartedTitle}</h2>
+          {page?.showWhyUs ? (
+            <section className="section get-start">
+              <div className="container">
+                <h2 className="h2 section-title">{page.sectionWhyUsTitle || messages.site.getStartedTitle}</h2>
 
-              <ul className="get-start-list">
-                {getStartSteps.map((step) => (
-                  <li key={step.title}>
-                    <div className="get-start-card">
-                      <div className={`card-icon ${step.iconClass}`}>
-                        <ion-icon name={step.icon}></ion-icon>
+                <ul className="get-start-list">
+                  {getStartSteps.map((step) => (
+                    <li key={step.title}>
+                      <div className="get-start-card">
+                        <div className={`card-icon ${step.iconClass}`}>
+                          <ion-icon name={step.icon}></ion-icon>
+                        </div>
+
+                        <h3 className="card-title">{step.title}</h3>
+
+                        <p className="card-text">{step.text}</p>
+
+                        {step.hasLink ? (
+                          <a href={rentHref} className="card-link">
+                            {messages.site.getStartedCta}
+                          </a>
+                        ) : null}
                       </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          ) : null}
 
-                      <h3 className="card-title">{step.title}</h3>
-
-                      <p className="card-text">{step.text}</p>
-
-                      {step.hasLink ? (
-                        <a href="#" className="card-link">
-                          {messages.site.getStartedCta}
-                        </a>
-                      ) : null}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* Blog section entry hidden by product requirement */}
+          {page?.showFaq && faq.length ? (
+            <section className="section faq" id="faq">
+              <div className="container">
+                <h2 className="h2 section-title">{page.sectionFaqTitle}</h2>
+                <ul className="faq-list">
+                  {faq.map((item) => (
+                    <li key={item.id} className="faq-item">
+                      <details className="faq-details">
+                        <summary className="faq-question">{item.question}</summary>
+                        <p className="faq-answer">{item.answer}</p>
+                      </details>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          ) : null}
         </article>
       </main>
 

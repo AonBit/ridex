@@ -1,7 +1,8 @@
-import { createCar, updateCar } from "@/lib/actions";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { CheckField, SectionCard, SubmitButton, TextField } from "@/components/forms/base";
-import { ImageUploadField } from "@/components/forms/image-upload-field";
+import { resolveMediaUrl } from "@/lib/media-url";
+import { SectionCard } from "@/components/forms/base";
+import { CarListActions } from "@/components/admin/car-list-actions";
 import { getMessages, type AppLocale } from "@/lib/i18n";
 
 export default async function CarsPage({ params }: { params?: { locale?: AppLocale } }) {
@@ -11,51 +12,43 @@ export default async function CarsPage({ params }: { params?: { locale?: AppLoca
 
   return (
     <div className="space-y-4">
-      <SectionCard title={t.title} description={t.desc}>
-        <form action={createCar} className="grid gap-3 md:grid-cols-3">
-          <TextField name="name" label={t.name} required />
-          <TextField name="brand" label={t.brand} required />
-          <TextField name="year" label={t.year} />
-          <TextField name="seats" label={t.seats} />
-          <TextField name="fuelType" label={t.fuelType} />
-          <TextField name="transmission" label={t.transmission} />
-          <TextField name="priceLabel" label={t.priceLabel} defaultValue="¥0/日" />
-          <TextField name="mileageLabel" label={t.mileageLabel} />
-          <div className="md:col-span-2">
-            <ImageUploadField name="coverImagePath" label={t.coverImagePath} usedBy="fleet-car" />
-          </div>
-          <TextField name="sortOrder" label={t.sortOrder} />
-          <CheckField name="isFeatured" label={t.featured} defaultChecked />
-          <CheckField name="isPublished" label={t.published} defaultChecked />
-          <div className="md:col-span-3"><SubmitButton label={t.add} /></div>
-        </form>
-      </SectionCard>
+      <SectionCard title={t.title} description={t.listDesc}>
+        <div className="flex justify-end">
+          <Link href={`/${locale}/admin/cars/new`} className="admin-button rounded-lg px-4 py-2 text-sm text-white">
+            {t.addCar}
+          </Link>
+        </div>
 
-      <SectionCard title={t.existing}>
-        <div className="space-y-2">
+        <div className="mt-4 space-y-3">
           {cars.map((car) => (
-            <form key={car.id} action={updateCar} className="rounded-lg border border-slate-200 p-3 text-sm">
-              <input type="hidden" name="id" value={car.id} />
-              <div className="grid gap-3 md:grid-cols-3">
-                <TextField name="name" label={t.name} defaultValue={car.name} required />
-                <TextField name="brand" label={t.brand} defaultValue={car.brand} required />
-                <TextField name="year" label={t.year} defaultValue={String(car.year)} />
-                <TextField name="seats" label={t.seats} defaultValue={String(car.seats)} />
-                <TextField name="fuelType" label={t.fuelType} defaultValue={car.fuelType} />
-                <TextField name="transmission" label={t.transmission} defaultValue={car.transmission} />
-                <TextField name="priceLabel" label={t.priceLabel} defaultValue={car.priceLabel} />
-                <TextField name="mileageLabel" label={t.mileageLabel} defaultValue={car.mileageLabel} />
-                <div className="md:col-span-2">
-                  <ImageUploadField name="coverImagePath" label={t.coverImagePath} defaultValue={car.coverImagePath} usedBy={`fleet-car:${car.id}`} />
-                </div>
-                <TextField name="sortOrder" label={t.sortOrder} defaultValue={String(car.sortOrder)} />
-                <CheckField name="isFeatured" label={t.featured} defaultChecked={car.isFeatured} />
-                <CheckField name="isPublished" label={t.published} defaultChecked={car.isPublished} />
-                <div className="md:col-span-3">
-                  <SubmitButton label={t.save ?? "Save"} />
-                </div>
+            <div key={car.id} className="flex flex-col gap-3 rounded-lg border border-slate-200 p-3 md:flex-row md:items-center">
+              <div className="h-16 w-24 shrink-0 overflow-hidden rounded-md bg-slate-100">
+                {car.coverImagePath ? (
+                  <img src={resolveMediaUrl(car.coverImagePath)} alt="" className="h-full w-full object-cover" />
+                ) : null}
               </div>
-            </form>
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-slate-900">{car.name}</p>
+                <p className="text-sm text-slate-500">
+                  {car.brand} · {t.sortOrder} {car.sortOrder}
+                </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  {car.isPublished ? t.statusPublished : t.statusDraft}
+                </p>
+              </div>
+              <CarListActions
+                carId={car.id}
+                locale={locale}
+                isPublished={car.isPublished}
+                labels={{
+                  edit: t.edit,
+                  publish: t.publish,
+                  unpublish: t.unpublish,
+                  delete: t.delete,
+                  confirmDelete: t.confirmDelete
+                }}
+              />
+            </div>
           ))}
           {!cars.length && <p className="text-sm text-slate-500">{t.empty}</p>}
         </div>

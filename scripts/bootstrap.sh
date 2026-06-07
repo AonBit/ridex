@@ -6,8 +6,6 @@ if [ ! -f .env ]; then
 fi
 
 npm install
-npx prisma generate
-npx prisma db push
-npm run prisma:seed
+sh scripts/upgrade-steps.sh
 
 echo "Bootstrap complete. Run npm run dev"
