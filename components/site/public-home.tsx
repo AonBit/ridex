@@ -21,6 +21,23 @@ const footerNeighborhoods = [
   "Kyoto"
 ];
 
+function resolveCarCardTitle(car: PublicData["cars"][number]) {
+  const name = car.name?.trim() ?? "";
+  const brand = car.brand?.trim() ?? "";
+  const hasName = Boolean(name) && name !== "-";
+  const showBrand = shouldRenderField(car, "brand", brand);
+
+  if (hasName) {
+    return { title: name, subtitle: showBrand ? brand : null };
+  }
+
+  if (showBrand) {
+    return { title: brand, subtitle: null };
+  }
+
+  return { title: name || brand, subtitle: null };
+}
+
 export function PublicHome({ data, locale }: { data: PublicData; locale: AppLocale }) {
   const { site, page, navItems, cars, faq, localizedTexts } = data;
   const messages = getMessages(data.locale);
@@ -120,22 +137,23 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: AppLoca
               </div>
 
               <ul className="featured-car-list">
-                {cars.map((car) => (
+                {cars.map((car) => {
+                  const { title, subtitle } = resolveCarCardTitle(car);
+
+                  return (
                   <li key={car.id}>
                     <div className="featured-car-card">
                       <figure className="card-banner">
-                        <img src={resolveMediaUrl(car.coverImagePath)} alt={`${car.name} ${car.year}`} loading="lazy" width="440" height="300" className="w-100" />
+                        <img src={resolveMediaUrl(car.coverImagePath)} alt={`${title} ${car.year}`} loading="lazy" width="440" height="300" className="w-100" />
                       </figure>
 
                       <div className="card-content">
                         <div className="card-title-wrapper">
                           <div className="card-title-block">
                             <h3 className="h3 card-title">
-                              <a href="#">{car.name}</a>
+                              <a href="#">{title}</a>
                             </h3>
-                            {shouldRenderField(car, "brand", car.brand) ? (
-                              <p className="card-brand-subtitle">{car.brand}</p>
-                            ) : null}
+                            {subtitle ? <p className="card-brand-subtitle">{subtitle}</p> : null}
                           </div>
 
                           {shouldRenderField(car, "year", String(car.year)) ? (
@@ -188,7 +206,8 @@ export function PublicHome({ data, locale }: { data: PublicData; locale: AppLoca
                       </div>
                     </div>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </div>
           </section>
