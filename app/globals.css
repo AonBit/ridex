@@ -51,3 +51,34 @@
   border-bottom-color: rgb(14 165 233);
   transform: translateY(-1px);
 }
+
+.legal-content--tokushoho .legal-tokushoho-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.legal-content--tokushoho .legal-tokushoho-table th,
+.legal-content--tokushoho .legal-tokushoho-table td {
+  border: 1px solid #cbd5e1;
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+  text-align: left;
+}
+
+.legal-content--tokushoho .legal-tokushoho-table th {
+  width: 28%;
+  background: #f1f5f9;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.legal-content .vditor-reset {
+  max-width: none;
+}
+
+.admin-shell .vditor-host .vditor {
+  border-radius: 0.75rem;
+  border-color: #e2e8f0;
+}

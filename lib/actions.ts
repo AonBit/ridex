@@ -361,6 +361,9 @@ export async function upsertLegalPage(formData: FormData) {
   revalidatePath("/ja");
   revalidatePath("/en");
   revalidatePath("/zh-Hant");
+  revalidatePath(`/ja/legal/${slug}`);
+  revalidatePath(`/en/legal/${slug}`);
+  revalidatePath(`/zh-Hant/legal/${slug}`);
 }
 
 export async function upsertCompanyInfo(formData: FormData) {

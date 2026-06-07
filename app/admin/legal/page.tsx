@@ -1,15 +1,15 @@
 import { LegalContentType, Locale } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { upsertLegalPage } from "@/lib/actions";
-import { SectionCard, SubmitButton, TextArea, TextField } from "@/components/forms/base";
-import { MarkdownEditor } from "@/components/forms/markdown-editor";
+import { LegalPageForm } from "@/components/admin/legal-page-form";
+import { SectionCard } from "@/components/forms/base";
+import { TOKUSHOHO_TEMPLATE_HTML } from "@/lib/legal-templates/tokushoho";
 import { getMessages, type AppLocale } from "@/lib/i18n";
 
 const legalSlugs = [
-  { slug: "tokushoho", key: "tokushoho", contentType: LegalContentType.TEXT },
-  { slug: "privacy", key: "privacy", contentType: LegalContentType.TEXT },
-  { slug: "anti-social-policy", key: "antiSocialPolicy", contentType: LegalContentType.TEXT },
-  { slug: "rental-terms", key: "rentalTerms", contentType: LegalContentType.MARKDOWN }
+  { slug: "tokushoho", key: "tokushoho", mode: "wysiwyg" as const, contentType: LegalContentType.TEXT },
+  { slug: "privacy", key: "privacy", mode: "sv" as const, contentType: LegalContentType.MARKDOWN },
+  { slug: "anti-social-policy", key: "antiSocialPolicy", mode: "sv" as const, contentType: LegalContentType.MARKDOWN },
+  { slug: "rental-terms", key: "rentalTerms", mode: "sv" as const, contentType: LegalContentType.MARKDOWN }
 ] as const;
 
 export default async function LegalPage({ params }: { params?: { locale?: AppLocale } }) {
@@ -20,24 +20,28 @@ export default async function LegalPage({ params }: { params?: { locale?: AppLoc
   const t = messages.admin.legalPage;
 
   return (
-    <SectionCard title={t.title} description={`${t.desc}（日本語のみ）`}>
+    <SectionCard title={t.title} description={t.desc}>
       <div className="space-y-4">
         {legalSlugs.map((entry) => {
           const current = legalPages.find((item) => item.slug === entry.slug);
           const legalTitle = legalTitleJa[entry.key];
+          const isTokushoho = entry.slug === "tokushoho";
+
           return (
-            <form key={entry.slug} action={upsertLegalPage} className="space-y-2 rounded-lg border border-slate-100 p-3">
-              <input type="hidden" name="locale" value="ja" />
-              <input type="hidden" name="slug" value={entry.slug} />
-              <input type="hidden" name="contentType" value={entry.contentType} />
-              <TextField name="title" label={`${legalTitle} ${t.titleSuffix}`} defaultValue={current?.title ?? legalTitle} />
-              {entry.contentType === LegalContentType.MARKDOWN ? (
-                <MarkdownEditor name="content" label={t.markdownContent} defaultValue={current?.content ?? ""} previewLabel={t.preview} rows={12} />
-              ) : (
-                <TextArea name="content" label={t.content} defaultValue={current?.content ?? ""} rows={6} />
-              )}
-              <SubmitButton label={t.save} />
-            </form>
+            <LegalPageForm
+              key={entry.slug}
+              slug={entry.slug}
+              contentType={entry.contentType}
+              mode={entry.mode}
+              titleLabel={`${legalTitle} ${t.titleSuffix}`}
+              contentLabel={isTokushoho ? t.htmlContent : t.markdownContent}
+              defaultTitle={current?.title ?? legalTitle}
+              defaultContent={current?.content ?? (isTokushoho ? TOKUSHOHO_TEMPLATE_HTML : "")}
+              saveLabel={t.save}
+              restoreTemplate={isTokushoho ? TOKUSHOHO_TEMPLATE_HTML : undefined}
+              restoreLabel={isTokushoho ? t.restoreTemplate : undefined}
+              confirmRestore={isTokushoho ? t.confirmRestoreTemplate : undefined}
+            />
           );
         })}
       </div>

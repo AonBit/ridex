@@ -232,11 +232,14 @@ export default {
     },
     legalPage: {
       title: "Legal Content",
-      desc: "Manage legal pages. Rental terms supports markdown.",
+      desc: "Legal pages are edited and published in Japanese only. Tokushoho uses WYSIWYG; other pages use Markdown (SV).",
       titleSuffix: "Title",
-      markdownContent: "Markdown Content",
+      markdownContent: "Markdown body",
+      htmlContent: "HTML body",
       content: "Content",
       preview: "Preview",
+      restoreTemplate: "Restore template",
+      confirmRestoreTemplate: "Replace with the tokushoho template?",
       save: "Save"
     },
     companyPage: {
@@ -266,6 +269,7 @@ export default {
     antiSocialPolicy: "Basic Policy Against Anti-Social Forces",
     rentalTerms: "Rental Terms and Conditions",
     company: "Company Information",
-    sectionLabel: "Legal Information"
+    sectionLabel: "Legal Information",
+    japaneseOnlyNotice: "This document is available in Japanese only."
   }
 } as const;

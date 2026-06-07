@@ -39,6 +39,8 @@
 - Optional usage reference (`usedBy`)
 
 ## Legal & Company (per locale)
-- Legal pages: privacy, tokushoho, anti-social policy, rental terms
-- Company disclosure fields
-- Footer region title and items
+- Legal pages (`/legal/*`): Japanese content only on public site; non-`ja` URLs show a Japanese-only notice
+- Tokushoho: Vditor WYSIWYG with Yamato-style table template + restore button
+- Privacy / anti-social policy / rental terms: Vditor SV (Markdown)
+- Unified rendering via `lib/markdown.ts` (Vditor engine; `marked` removed)
+- Company disclosure fields (structured form, not Markdown)

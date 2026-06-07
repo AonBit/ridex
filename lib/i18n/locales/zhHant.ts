@@ -232,11 +232,14 @@ export default {
     },
     legalPage: {
       title: "法務內容",
-      desc: "管理法務頁面，借渡約款支援 Markdown。",
+      desc: "法務頁面僅以日語編輯與公開。特商法使用 WYSIWYG，其餘頁面使用 Markdown（SV）。",
       titleSuffix: "標題",
-      markdownContent: "Markdown 內容",
+      markdownContent: "Markdown 正文",
+      htmlContent: "HTML 正文",
       content: "內容",
       preview: "預覽",
+      restoreTemplate: "還原模板",
+      confirmRestoreTemplate: "以特商法模板覆蓋目前內容？",
       save: "儲存"
     },
     companyPage: {
@@ -266,6 +269,7 @@ export default {
     antiSocialPolicy: "反社會勢力基本方針",
     rentalTerms: "租車借渡約款",
     company: "公司資訊",
-    sectionLabel: "法務資訊"
+    sectionLabel: "法務資訊",
+    japaneseOnlyNotice: "本文僅提供日語版本。"
   }
 } as const;

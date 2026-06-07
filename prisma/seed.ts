@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { LegalContentType, Locale, PrismaClient } from "@prisma/client";
+import { TOKUSHOHO_TEMPLATE_HTML } from "../lib/legal-templates/tokushoho";
 
 const prisma = new PrismaClient();
 
@@ -161,7 +162,7 @@ async function main() {
 
   const legalSeed = {
     ja: {
-      tokushoho: "販売業者名、運営責任者、所在地、連絡先、料金、支払時期、引渡時期、キャンセルポリシーをここに記載してください。",
+      tokushoho: TOKUSHOHO_TEMPLATE_HTML,
       privacy: "個人情報の取得目的、第三者提供、保存期間、開示請求方法などをここに記載してください。",
       "anti-social-policy": "当社は反社会的勢力との一切の関係を遮断し、要求に対しては組織的に対応します。詳細方針をここに記載してください。",
       "rental-terms": "# レンタカー貸渡約款\n\nこのセクションに約款本文を Markdown で入力してください。"
@@ -199,7 +200,8 @@ async function main() {
               ? "反社会的勢力に対する基本方針"
               : "レンタカー貸渡約款",
           content,
-          contentType: slug === "rental-terms" ? LegalContentType.MARKDOWN : LegalContentType.TEXT
+          contentType:
+            slug === "tokushoho" ? LegalContentType.TEXT : LegalContentType.MARKDOWN
         }
       });
     }

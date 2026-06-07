@@ -232,11 +232,14 @@ export default {
     },
     legalPage: {
       title: "法務コンテンツ",
-      desc: "法務ページを管理します。貸渡約款は Markdown 対応です。",
+      desc: "法務ページは日本語のみ編集・公開します。特商法は WYSIWYG、他ページは Markdown（SV）です。",
       titleSuffix: "タイトル",
-      markdownContent: "Markdown 内容",
+      markdownContent: "Markdown 本文",
+      htmlContent: "HTML 本文",
       content: "内容",
       preview: "プレビュー",
+      restoreTemplate: "テンプレートを復元",
+      confirmRestoreTemplate: "特商法テンプレートで上書きします。よろしいですか？",
       save: "保存"
     },
     companyPage: {
@@ -267,6 +270,7 @@ export default {
     rentalTerms: "レンタカー貸渡約款",
     company: "会社情報",
     siteInfo: "站点信息",
-    sectionLabel: "法務情報"
+    sectionLabel: "法務情報",
+    japaneseOnlyNotice: "本文は日本語版のみ提供しています。"
   }
 } as const;
